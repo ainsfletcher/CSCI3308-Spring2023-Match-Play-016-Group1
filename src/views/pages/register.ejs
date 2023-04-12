@@ -1,0 +1,28 @@
+<%- include ('../partials/head') %>
+<%- include ('../partials/menu') %>
+<div class="col"><%- include ('../partials/message') %></div>
+
+<main>
+  <div class="container">
+    <!-- THE REST OF YOUR HTML CODE GOES HERE -->
+    <h2><centre>Register</centre></h2>
+    <form action="/register" method="POST">
+        <label for="name">Username:</label>
+        <input type="text" id="username" name="username" />
+      
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" />
+      
+        <button type="submit" > Register</button>
+      </form>
+
+      <div class = "mb-3 form-check">
+        <label class = "form-check-label" for="exampleCheck1">Already have an account?</label>
+        <a href="/login">Login</a>
+      </div>
+
+  </div>
+
+</main>
+
+<%- include ('../partials/footer') %>
