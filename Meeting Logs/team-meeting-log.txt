@@ -1,0 +1,10 @@
+
+MEETING DATE: 4/13/23
+----------------------
+Meeting Duration: 1 hour
+During this meeting, we discussed our wireframes and how we want to use API routes for our project.
+We decided to use a weather API so that users can see the forecast in their area. However, we are not sure how
+using this API would work, so we might change this our for using an API to check that someones email is valid. 
+We also discussed the layout and the amount of pages we want in our website. We ultimately decided on a login/registration,
+a home page where the user can begin finding matches, a connect page where the users can message each other, profile page, 
+and weather page.

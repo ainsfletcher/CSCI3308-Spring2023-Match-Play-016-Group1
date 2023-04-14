@@ -1,0 +1,8 @@
+
+MEETING DATE: 4/13/23
+---------------------
+Meeting Duration: 15 mins
+During this meeting, our TA suggested that our login should be completed by the scheduled lab tomorrow 
+in order to test it out properly. We also need release notes done before tomorrow so that we can receive
+the proper grade. Other than that, we need more functionality to our design. We plan on discussing this further during lab and 
+during our next meeting.
