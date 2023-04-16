@@ -9,6 +9,5 @@ CREATE TABLE users(
   age SMALLINT NOT NULL,
   home_course VARCHAR(50) NOT NULL,
   movement(walk/cart) VARCHAR(10) NOT NULL,
-  bio VARCHAR(500) NOT NULL,
-
+  bio VARCHAR(500) NOT NULL
 );
