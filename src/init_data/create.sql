@@ -11,3 +11,16 @@ CREATE TABLE users(
   movement(walk/cart) VARCHAR(10) NOT NULL,
   bio VARCHAR(500) NOT NULL
 );
+
+DROP TABLE IF EXISTS pictures CASCADE;
+CREATE TABLE pictures(
+  picture_id SERIAL PRIMARY KEY,
+  picture_url VARCHAR(100) NOT NULL,
+  picture_description VARCHAR(500) NOT NULL
+);
+
+DROP TABLE IF EXISTS users_to_pictures CASCADE;
+CREATE TABLE users_to_pictures(
+  user_id VARCHAR(50) NOT NULL,
+  picture_id FOREIGN KEY REFERENCES pictures(picture_id) NOT NULL,
+);
