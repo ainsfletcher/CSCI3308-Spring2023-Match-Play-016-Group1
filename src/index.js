@@ -76,10 +76,10 @@ app.get("/", (req, res) => {
 
     try{
       await db.one(query, [req.body.username, hash]);
-      return res.redirect('/login');
+      return res.status(200).redirect('/login');
     } catch(error){
       console.log(error);
-      return res.render('pages/register', {
+      return res.status(400).render('pages/register', {
         message: "Username already exists"
       });
     }
@@ -97,11 +97,12 @@ app.get("/", (req, res) => {
       if (data != undefined){
         user = data;
       } else{
-        return console.log('user not found');
+        console.log('user not found');
+        return res.status(400);
       }
     } catch (error){
       console.log("database error" + error);
-      return res.render('pages/register', {
+      return res.status(400).render('pages/register', {
         message: "Please register an account or double check username and password!"
       });
     }
@@ -113,13 +114,13 @@ app.get("/", (req, res) => {
             req.session.user = user;
             req.session.save();
 
-            return res.redirect('/home');
+            return res.status(200).redirect('/home');
         }
 
     }
     catch(error){
         console.log("error: " + error);
-        res.redirect('pages/register', {
+        res.status(400).redirect('pages/register', {
           message: "Please register an account or double check username and password!"
         });
         
@@ -140,5 +141,14 @@ app.get("/", (req, res) => {
     
   });
 
-app.listen(3000);
+
+  /////////LAB 11/////////////////////
+
+  app.get('/welcome', (req, res) => {
+    res.json({status: 'success', message: 'Welcome!'});
+  });
+
+  //////////////////////////////////////
+//app.listen(3000);
+module.exports = app.listen(3000);
 console.log('Server is listening on port 3000');
