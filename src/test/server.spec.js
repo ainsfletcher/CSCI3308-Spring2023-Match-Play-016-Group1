@@ -11,6 +11,18 @@ const {assert, expect} = chai;
 
 const db = require("../resources/js/dbConnection");
 
+const refreshTestUser = async (data) => {
+    try{
+        const query = `SELECT username FROM users WHERE username = $1 ;`;
+        const user = await db.one(query, [data.username]);
+        console.log("Test user found");
+        const delQuery = `DELETE FROM users WHERE username = $1;`;
+        await db.none(delQuery, [data.username]);
+    } catch (error){
+        return console.log("Test user not found");
+    }
+}
+
 // ===========================================================================
 // TO-DO: Part A and B Login and Register unit test case
 
@@ -28,6 +40,8 @@ describe('Server!', () => {
       });
   });
 });
+
+refreshTestUser({username: "username"});
 
 describe('Register test', () => {
 
