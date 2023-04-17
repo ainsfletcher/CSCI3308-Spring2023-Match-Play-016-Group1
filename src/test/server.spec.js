@@ -9,6 +9,8 @@ chai.should();
 chai.use(chaiHttp);
 const {assert, expect} = chai;
 
+const db = require("../resources/js/dbConnection");
+
 // ===========================================================================
 // TO-DO: Part A and B Login and Register unit test case
 
@@ -44,7 +46,7 @@ describe('Register test', () => {
         chai
         .request(server)
         .post('/register')
-        .send({username: 'username', password: 'password'})
+        .send({username: 'username', password: ''})
         .end((err, res) => {
         expect(res).to.have.status(400);
         done();
@@ -70,7 +72,7 @@ describe('Login test', () => {
         chai
         .request(server)
         .post('/login')
-        .send({username: 'username1', password: '123'})
+        .send({username: 'username1', password: ''})
         .end((err, res) => {
         expect(res).to.have.status(400);
         done();

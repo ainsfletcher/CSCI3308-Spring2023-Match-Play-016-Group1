@@ -1,33 +1,34 @@
 
 const express = require('express'); // To build an application server or API
 const app = express();
-const pgp = require('pg-promise')(); // To connect to the Postgres DB from the node server
+// const pgp = require('pg-promise')(); // To connect to the Postgres DB from the node server
 const bodyParser = require('body-parser');
 const session = require('express-session'); // To set the session object. To store or access session data, use the `req.session`, which is (generally) serialized as JSON by the store.
 const bcrypt = require('bcrypt'); //  To hash passwords
 const axios = require('axios'); // To make HTTP requests from our server. We'll learn more about it in Part B.
 
+const db = require("./resources/js/dbConnection");
 
-// database configuration
-const dbConfig = {
-  host: 'db', // the database server
-  port: 5432, // the database port
-  database: process.env.POSTGRES_DB, // the database name
-  user: process.env.POSTGRES_USER, // the user account to connect with
-  password: process.env.POSTGRES_PASSWORD, // the password of the user account
-};
+// // database configuration
+// const dbConfig = {
+//   host: 'db', // the database server
+//   port: 5432, // the database port
+//   database: process.env.POSTGRES_DB, // the database name
+//   user: process.env.POSTGRES_USER, // the user account to connect with
+//   password: process.env.POSTGRES_PASSWORD, // the password of the user account
+// };
 
-const db = pgp(dbConfig);
+// const db = pgp(dbConfig);
 
-// test your database
-db.connect()
-  .then(obj => {
-    console.log('Database connection successful'); // you can view this message in the docker compose logs
-    obj.done(); // success, release the connection;
-  })
-  .catch(error => {
-    console.log('ERROR:', error.message || error);
-  });
+// // test your database
+// db.connect()
+//   .then(obj => {
+//     console.log('Database connection successful'); // you can view this message in the docker compose logs
+//     obj.done(); // success, release the connection;
+//   })
+//   .catch(error => {
+//     console.log('ERROR:', error.message || error);
+//   });
 
 
 app.set('view engine', 'ejs'); // set the view engine to EJS
@@ -71,6 +72,11 @@ app.get("/", (req, res) => {
   });
 
   app.post('/register', async (req, res) => {
+    if(!req.body.username || !req.body.password){
+      return res.status(400).render('pages/register', {
+        message: "Missing username or password"
+      });
+    }
     const hash = await bcrypt.hash(req.body.password, 10);
     const query = `INSERT INTO users (username, password) VALUES ($1, $2) returning *;`;
 
@@ -87,7 +93,11 @@ app.get("/", (req, res) => {
   });
 
   app.post('/login', async (req, res) => {
-
+    if(!req.body.username || !req.body.password){
+      return res.status(400).render('pages/login', {
+        message: "Missing username or password"
+      });
+    }
     var user = '';
     const query = `SELECT * FROM users WHERE username = $1 ;`;
 
@@ -114,7 +124,7 @@ app.get("/", (req, res) => {
             req.session.user = user;
             req.session.save();
 
-            return res.status(200).redirect('/home');
+            return res.status(200).redirect('/profile');
         }
 
     }
@@ -125,6 +135,18 @@ app.get("/", (req, res) => {
         });
         
     }
+
+  });
+
+
+  app.get("/profile", (req, res) => {
+    res.render("pages/profile");
+  });
+
+  app.post("/profile", (req, res) => {
+    const query = `INSERT INTO users_info (name, age, handicap, home_course, movement, bio) VALUES ($1, $2, $3, $4, $5, $6) returning *;`;
+
+
 
   });
 
@@ -150,5 +172,9 @@ app.get("/", (req, res) => {
 
   //////////////////////////////////////
 //app.listen(3000);
-module.exports = app.listen(3000);
-console.log('Server is listening on port 3000');
+try {
+  module.exports = app.listen(3000);
+  console.log('Server is listening on port 3000');
+} catch (error) {
+  console.log('Server failed - ' + error);
+}
