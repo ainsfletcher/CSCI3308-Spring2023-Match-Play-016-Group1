@@ -78,7 +78,7 @@ app.get("/", (req, res) => {
       await db.one(query, [req.body.username, hash]);
       return res.status(200).redirect('/login');
     } catch(error){
-      console.log(error);
+      console.log("DB error - " + error);
       return res.status(400).render('pages/register', {
         message: "Username already exists"
       });
