@@ -218,24 +218,31 @@ app.get("/", (req, res) => {
   });
 
   app.get("/profile", async (req, res) => {
-    //have an insert into users_info (in login) to insert blank strings
-    //app.put(updateInfo)
-    //get current user , query to get user id
-    //update user info where user_id matches 
-    
-    // update login to create a blank row in user_info with blank strings
+    if (!req.session.user) {
+      console.log("No active session!");
+      return res.render('pages/login', {
+        message: "Please log in to view home page!"
+      });
+  }
 
-    // from db grab user info based on user id (same process as above)
-
-    // if blank - send the ejs files "Blank" or some other filler (not blank strings "")
-    // Should be no errors here just simple return of data - this way it works for blank info and populated user info
     const user = req.session.user;
-    console.log("USER " + user);
-    const info_id = await userToInfoDB(user);
+    // console.log("USER" + user);
+    let data = {
+      name: "Blank",
+      handicap: 0.0,
+      age: 0,
+      home_course: "Blank",
+      movement: "Blank",
+      bio: "Blank"
+    };
 
-    const query = `SELECT * FROM user_info WHERE info_id = $1`;
+    if (user) {
+      const info_id = await userToInfoDB(user);
 
-    const data = await db.one(query, [info_id]);
+      const query = `SELECT * FROM user_info WHERE info_id = $1`;
+
+      data = await db.one(query, [info_id]);
+    }
     // console.log(data);
     res.status(200).render("pages/profile", {
       message: "poop",
