@@ -5,9 +5,12 @@
 <main>
   <div class="container">
     <!-- THE REST OF YOUR HTML CODE GOES HERE -->
-
+    <h1>
+        <%- results.name %>
+    </h1>
     <h2>Profile</h2>
-    <form action="/profile" method="POST">
+    <form action="/updateInfo" method="POST">
+        
         <p>
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" />
@@ -22,7 +25,7 @@
         </p>
         <p>
             <label for="home_course">Home Course:</label>
-            <input type="text" id="home-course" name="home-course" />
+            <input type="text" id="home_course" name="home_course" />
         </p>
         <p>
             <label for="movement">Movement:</label>

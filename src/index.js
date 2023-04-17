@@ -77,11 +77,25 @@ app.get("/", (req, res) => {
         message: "Missing username or password"
       });
     }
+    let infoId = "Nothin";
+    let userId = "Nothin";
     const hash = await bcrypt.hash(req.body.password, 10);
     const query = `INSERT INTO users (username, password) VALUES ($1, $2) returning *;`;
+    const infoQuery = `INSERT INTO user_info (name, age, handicap, home_course, movement, bio) VALUES ('blank', 0.0, 0, 'blank', 'blank', 'blank') returning *;`;
+    const relationalQuery = `INSERT INTO user_to_info (user_id, info_id) VALUES ($1, $2) returning * ;`;
+
+    try {
+      infoId = await db.one(infoQuery);
+      // console.log("Your info id - " + infoId.info_id);
+    } catch (error) {
+      return console.log("Create user info query error - "+ error);
+    }
 
     try{
-      await db.one(query, [req.body.username, hash]);
+      userId = await db.one(query, [req.body.username, hash]);
+      // console.log(userId.user_id);
+      // console.log("Info id!! - " + infoId.info_id);
+      await db.one(relationalQuery, [userId.user_id, infoId.info_id]);
       return res.status(200).redirect('/login');
     } catch(error){
       console.log("DB error - " + error);
@@ -111,7 +125,7 @@ app.get("/", (req, res) => {
         return res.status(400);
       }
     } catch (error){
-      console.log("database error" + error);
+      console.log("database error - from login - most likely: register an account or double check username and password " + error);
       return res.status(400).render('pages/register', {
         message: "Please register an account or double check username and password!"
       });
@@ -139,14 +153,100 @@ app.get("/", (req, res) => {
   });
 
 
-  app.get("/profile", (req, res) => {
-    res.render("pages/profile");
+  // app.get("/profile", (req, res) => {
+  //   res.render("pages/profile");
+  // });
+
+  const userToInfoDB = async (user) => {
+    try{
+        const query = `SELECT user_id FROM users WHERE username = $1 ;`;
+        const uID = await db.one(query, [user.username]);
+
+        const relationQuery = `SELECT info_id FROM user_to_info WHERE user_id = $1`;
+        return (await db.one(relationQuery, [uID.user_id])).info_id;
+    } catch (error){
+        return console.log("ERROR from userToInfoDB - " + error);
+    }
+}
+
+  app.post("/updateInfo", async (req,res) => {
+    // Check to make sure req.session.user exists - otherwise redirect to login and yell curse words
+    if(!req.session.user){
+      return res.render('pages/login',{
+        message: "login to update info"
+      });
+    }
+
+    const user = req.session.user;
+    const info_id = await userToInfoDB(user);
+
+    const query = `SELECT * FROM user_info WHERE info_id = $1`;
+
+    const results = await db.one(query, [info_id]);
+
+    // check if info exists (not undefined) else render page(route is below) w/ message "Please fill all boxes"
+    const data = req.body;
+    if(!data.name || !data.handicap || !data.age || !data.home_course || !data.movement || !data.bio ) {
+      return res.render('pages/profile', {
+        message: "Please complete your profile by filling out all information!",
+        results: results
+      });
+    };
+
+
+    // query to alter at user_id if found (they cant even access this page if they arent logged in)
+
+    // const relationalQuery = `SELECT info_id `
+    const alterQuery = `UPDATE user_info SET name = $1, handicap = $2, age = $3, home_course = $4, movement = $5, bio = $6 WHERE info_id = $7 RETURNING * ;`;
+
+    try {
+      // use second query to update db
+      // render new profile page (route is below) with success! message and show new info
+      db.one(alterQuery, [
+        data.name,
+        data.handicap,
+        data.age,
+        data.home_course,
+        data.movement,
+        data.bio,
+        info_id
+      ]);
+    } catch (error) {
+      console.log("Internal server error when grabbing user info for PUT req: /updateinfo - " + error);
+    }
+    return res.redirect("/profile");
   });
 
-  app.post("/profile", (req, res) => {
-    const query = `INSERT INTO users_info (name, age, handicap, home_course, movement, bio) VALUES ($1, $2, $3, $4, $5, $6) returning *;`;
+  app.get("/profile", async (req, res) => {
+    //have an insert into users_info (in login) to insert blank strings
+    //app.put(updateInfo)
+    //get current user , query to get user id
+    //update user info where user_id matches 
+    
+    // update login to create a blank row in user_info with blank strings
 
+    // from db grab user info based on user id (same process as above)
 
+    // if blank - send the ejs files "Blank" or some other filler (not blank strings "")
+    // Should be no errors here just simple return of data - this way it works for blank info and populated user info
+    const user = req.session.user;
+    console.log("USER " + user);
+    const info_id = await userToInfoDB(user);
+
+    const query = `SELECT * FROM user_info WHERE info_id = $1`;
+
+    const data = await db.one(query, [info_id]);
+    // console.log(data);
+    res.status(200).render("pages/profile", {
+      message: "poop",
+      results: data
+    });
+    // .catch(function (error) {
+    //   console.log("Error logging info in DB - " + error);
+    //   res.status(400).render("pages/profile", {
+    //     message: "Internal server error"
+    //   })
+    // })
 
   });
 
