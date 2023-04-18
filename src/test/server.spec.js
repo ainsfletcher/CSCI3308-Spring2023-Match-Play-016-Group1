@@ -9,6 +9,20 @@ chai.should();
 chai.use(chaiHttp);
 const {assert, expect} = chai;
 
+const db = require("../resources/js/dbConnection");
+
+const refreshTestUser = async (data) => {
+    try{
+        const query = `SELECT username FROM users WHERE username = $1 ;`;
+        const user = await db.one(query, [data.username]);
+        console.log("Test user found");
+        const delQuery = `DELETE FROM users WHERE username = $1;`;
+        await db.none(delQuery, [data.username]);
+    } catch (error){
+        return console.log("Test user not found");
+    }
+}
+
 // ===========================================================================
 // TO-DO: Part A and B Login and Register unit test case
 
@@ -27,6 +41,8 @@ describe('Server!', () => {
   });
 });
 
+refreshTestUser({username: "username"});
+
 describe('Register test', () => {
 
     it('Positive : /register', done => {
@@ -44,7 +60,7 @@ describe('Register test', () => {
         chai
         .request(server)
         .post('/register')
-        .send({username: 'username', password: 'password'})
+        .send({username: 'username', password: ''})
         .end((err, res) => {
         expect(res).to.have.status(400);
         done();
@@ -70,7 +86,7 @@ describe('Login test', () => {
         chai
         .request(server)
         .post('/login')
-        .send({username: 'username1', password: '123'})
+        .send({username: 'username1', password: ''})
         .end((err, res) => {
         expect(res).to.have.status(400);
         done();

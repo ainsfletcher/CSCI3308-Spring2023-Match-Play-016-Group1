@@ -1,0 +1,79 @@
+<%- include ('../partials/head') %> 
+<%- include ('../partials/menu') %>
+<div class="col"><%- include ('../partials/message') %></div>
+
+<main>
+  <div class="container">
+
+    <div class="card-deck">
+      <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                  <h2> Your Info: </h2>
+                  <h1>
+                      <a>Name: </a> <%- results.name %>
+                  </h1>
+                  <h1>
+                      <a>Handicap: </a><%- results.handicap %>
+                  </h1>
+                  <h1>
+                      <a>Age: </a> <%- results.age %>
+                  </h1>
+                  <h1>
+                      <a>Home Course: </a><%- results.home_course %>
+                  </h1>
+                  <h1>
+                      <a>Movement: </a> <%- results.movement %>
+                  </h1>
+                  <h1>
+                      <a>Bio: </a><%- results.bio %>
+                  </h1>
+                </div>
+              </div>
+        </div>
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                  <h2> Edit Your Profile</h2>
+                  <form action="/updateInfo" method="POST" autocomplete="off">
+                      
+                      <p>
+                          <label for="name">Name:</label>
+                          <input type="text" id="name" name="name" />
+                      </p>
+                      <p>
+                          <label for="handicap">Handicap:</label>
+                          <input type="text" id="handicap" name="handicap" />
+                      </p>
+                      <p>
+                          <label for="age">Age:</label>
+                          <input type="text" id="age" name="age" />
+                      </p>
+                      <p>
+                          <label for="home_course">Home Course:</label>
+                          <input type="text" id="home_course" name="home_course" />
+                      </p>
+                      <p>
+                          <label for="movement">Movement:</label>
+                          <input type="text" id="movement" name="movement" />
+                      </p>
+                      <p>
+                          <label for="handicap">Bio:</label>
+                          <input type="text" id="bio" name="bio" />
+                      </p>
+                      <button type="submit" > Update</button>
+                    </form>
+                </div>
+              </div>
+        </div>
+    </div>
+</div>
+    <!-- <div class = "mb-3 form-check">
+        <label class = "form-check-label" for="exampleCheck1">Don't have an account?</label>
+        <a href="/register"> Register</a>
+      </div> -->
+  </div>
+</main>
+
+<%- include ('../partials/footer') %>
