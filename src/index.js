@@ -221,7 +221,7 @@ app.get("/", (req, res) => {
     if (!req.session.user) {
       console.log("No active session!");
       return res.render('pages/login', {
-        message: "Please log in to view home page!"
+        message: "Please log in to view profile page!"
       });
   }
 
@@ -245,7 +245,7 @@ app.get("/", (req, res) => {
     }
     // console.log(data);
     res.status(200).render("pages/profile", {
-      message: "poop",
+      message: "Welcome! please enter your information",
       results: data
     });
     // .catch(function (error) {
