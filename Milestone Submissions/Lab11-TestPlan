@@ -1,0 +1,33 @@
+A test plan is put in place so we can show our tests and how we intend to perform them to people outside of the project.
+We will be writing API’s to call on user data that is being stored in our databases. The purposes of testing the API’s is to make sure that the information being given and received can perform like it is expected to on all of the test cases. API calls that we will make and test as well as the date we would like to have them tested by are: 
+
+Login and Register (4/20)
+Test what is allowed to register such as a user with a proper name and a user with a number for a name
+Calling/updating user information -users page- (4/24)
+Calling/deleting/storing images (4/27)
+Calling other user information -explore page- (4/27)
+Retrieving the current weather in area (4/27) - User can input a keyword that will act as the query for the weatherstack API call. 
+
+
+UAT Examples:
+
+1. Login: The page to login should prompt the user to input their username and password assuming they have registered an account previously. If their information is correct, they will be redirected to the explore page. If it isnt, they will be reprompted/redirected to the registration page. The data will be two strings, the username and password.
+-Data:  Username: (string), Password: (string)
+-User Activity: Inputting their information, then submitting through the ‘login’ button. 
+-Test Environment: Development
+-Expected Results: Status: 200, Welcome message, redirect to explore page
+-Acceptance Testers: MatchPlay group members
+
+2. Updating user information: This feature that allows users to update their information will be accessible through a button on the profile page. The user can click this button to input their new information through a form. The form will access a query that updates the users information in the database, then their new information will be displayed to them. If this fails, they will be prompted to properly input new information.
+-Data: name(string), handicap(double), age(int), home course(string), movement(string), bio(string)
+-User Activity: Pressing the button activating the form, inputting new information into the fields, then clicking the submit button.
+-Test Environment: Development
+-Expected Results: Status 200, “info updated” message, redirected to profile page
+-Acceptance Testers: MatchPlay group members
+
+3. Calling other user information: This feature allows the user to see other members information when navigating to the explore page. The user can click to this page from their nav bar, then the information will be displayed for them, where they can later like/dislike users. If this fails, the user will not be able to see any other users information on this page.
+-Data: information from initialized member table in create.sql
+-User Activity: Selecting link from nav bar to access explore page
+-Test Environment: Development
+-Expected Results: Status 200,  redirected to explore page
+-Acceptance Testers: MatchPlay group members
