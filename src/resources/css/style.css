@@ -1,0 +1,23 @@
+body {
+    font-family: 'Arial', sans-serif;
+}
+
+.navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.nav-link-MatchPlay {
+    font-size: 24px;
+    /* Increase font size */
+    color: #fff;
+    /* Make the text white */
+    padding-left: 24px;
+    /* Increase spacing between the words (left side) */
+    padding-right: 24px;
+    /* Increase spacing between the words (right side) */
+}
+
+.nav-link-MatchPlay:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
