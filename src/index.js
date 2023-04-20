@@ -30,7 +30,6 @@ const db = require("./resources/js/dbConnection");
 //     console.log('ERROR:', error.message || error);
 //   });
 
-
 app.set('view engine', 'ejs'); // set the view engine to EJS
 app.use(bodyParser.json()); // specify the usage of JSON for parsing request body.
 
@@ -59,6 +58,9 @@ app.get("/", (req, res) => {
     res.render("pages/register");
   });
 
+  app.get("/weather", (req, res) => {
+    res.render("pages/weather");
+  });
 
   app.get("/login", (req, res) => {
     res.render("pages/login");
@@ -139,6 +141,10 @@ app.get("/", (req, res) => {
             req.session.save();
 
             return res.status(200).redirect('/profile');
+        } else {
+          res.status(200).render("pages/login", {
+            message: "Wrong password!"
+          })
         }
 
     }
@@ -269,6 +275,48 @@ app.get("/", (req, res) => {
     res.render('pages/home')
     
   });
+
+function weatherFetch() {
+  // const params = {
+  //   access_key: '480b7687e691fc4318ab8b673ec91dca',
+  //   query: 'New York'
+  // }
+  
+  // axios.get('http://api.weatherstack.com/current', {params})
+  //   .then(response => {
+  //     const apiResponse = response.data;
+  //     console.log(`Current temperature in ${response.data.current.temperature} is ${response}℃`);
+  //     return response.data;
+  //   }).catch(error => {
+  //     console.log(error);
+  //     return error;
+  //   });
+};
+  
+app.get("/weatherAPI", async (req, res) => {
+  const params = {
+    access_key: process.env.WEATHER_API_KEY,
+    query: 'Boulder',
+    units: 'f'
+  }
+  
+  axios.get('http://api.weatherstack.com/current', {params})
+    .then(response => {
+      console.log(response.data.current.temperature);
+      res.render('pages/weatherinfo', {
+        results: response.data.current
+      });
+      // const apiResponse = response.data;
+      // console.log(`Current temperature in ${response.data.current.temperature} is ${response}℃`);
+      // res.status(200).send(`Your data: ${response.data.location.name}`);
+    }).catch(error => {
+      console.log(error);
+      return error;
+    });
+  
+  
+});
+
 
 
   /////////LAB 11/////////////////////
