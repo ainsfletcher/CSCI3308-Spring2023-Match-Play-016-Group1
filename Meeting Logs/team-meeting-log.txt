@@ -17,3 +17,9 @@ images using postgres, so we are putting that idea on hold for now. In the meant
 weather API, the matching, and the profile page. We have our main group meeting tomorrow.
 
 MEETING DATE: 4/20/23
+----------------------
+Meeting Duration: 50 minute
+During this meeting we all met to discuss the changes and pushes that have been made, we found a couple bugs that need to be
+ addressed uncluding the weather function, the profile page, and explore page. We made a schedule to work on the front end
+ and "pretty up" the look. We plan on asking Nikita about our messaging function still have to make a plan to implement that.
+ We plan on making 5 users to initialize the database and to build our explore page upon.
