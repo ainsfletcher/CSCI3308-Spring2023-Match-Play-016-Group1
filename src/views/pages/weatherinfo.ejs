@@ -1,0 +1,21 @@
+<%- include ('../partials/head') %>
+<%- include ('../partials/menu') %>
+
+<main>
+  <div class="container text-center">
+      <% if (!results) { %>
+        <h1>Error with result</h1>
+        <% } else { %>
+
+        <div class="card" style="width: 18rem;"><centre>
+          <img class="card-img-top" src="<%- results.weather_icons[0] %>" alt="weather icon">
+          <div class="card-body">
+            <h1 class = "card-title"><%=results.temperature%>°</h1>
+            <p class="card-text"></p>
+          </div>
+        </centre></div>
+        <% } %>
+  </div>
+</main>
+
+<%- include ('../partials/footer') %>
