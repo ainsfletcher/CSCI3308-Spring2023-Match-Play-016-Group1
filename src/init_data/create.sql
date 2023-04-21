@@ -23,3 +23,11 @@ CREATE TABLE user_to_info(
   FOREIGN KEY (user_id) REFERENCES users (user_id),
   FOREIGN KEY (info_id) REFERENCES user_info (info_id)
 );
+
+DROP TABLE IF EXISTS messages CASCADE;
+CREATE TABLE messages(
+  msg_id SERIAL PRIMARY KEY,
+  sender_id INT NOT NULL,
+  recipient_id INT NOT NULL,
+  message TEXT
+);
