@@ -277,11 +277,27 @@ app.get("/", (req, res) => {
   });
 
 
-app.get("/matches", (req, res) => {
-   res.render("pages/register");
-});
 
-app.post("/matches")
+
+app.post("/matches", (req, res) =>{
+
+  if(!req.session.user){
+    return res.render('pages/login',{
+      message: "login to update info"
+    });
+  }
+
+  const user_id = req.session.user;
+  const match_id = req.user_id;
+
+  const query = `SELECT * FROM matches WHERE match_id = $1;` ;
+
+  
+  const query = `INSERT INTO matches (user_id, match_id) VALUES $1, $2 ;` ;
+
+
+
+});
 
 
 function weatherFetch() {
