@@ -276,6 +276,14 @@ app.get("/", (req, res) => {
     
   });
 
+
+app.get("/matches", (req, res) => {
+   res.render("pages/register");
+});
+
+app.post("/matches")
+
+
 function weatherFetch() {
   // const params = {
   //   access_key: '480b7687e691fc4318ab8b673ec91dca',

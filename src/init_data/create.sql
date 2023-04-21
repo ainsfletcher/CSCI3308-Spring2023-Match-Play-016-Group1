@@ -13,7 +13,8 @@ CREATE TABLE user_info(
   age SMALLINT NOT NULL,
   home_course VARCHAR(50) NOT NULL,
   movement VARCHAR(10) NOT NULL,
-  bio VARCHAR(500) NOT NULL
+  bio VARCHAR(500) NOT NULL,
+  contact VARCHAR(100)
 );
 
 DROP TABLE IF EXISTS user_to_info CASCADE;
@@ -24,10 +25,10 @@ CREATE TABLE user_to_info(
   FOREIGN KEY (info_id) REFERENCES user_info (info_id)
 );
 
-DROP TABLE IF EXISTS messages CASCADE;
-CREATE TABLE messages(
-  msg_id SERIAL PRIMARY KEY,
-  sender_id INT NOT NULL,
-  recipient_id INT NOT NULL,
-  message TEXT
+DROP TABLE IF EXISTS matches CASCADE;
+CREATE TABLE matches(
+  user_id INT NOT NULL,
+  match_id INT NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users (user_id),
+  FOREIGN KEY (match_id) REFERENCES users (user_id)
 );
