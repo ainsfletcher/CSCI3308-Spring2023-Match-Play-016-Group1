@@ -6,3 +6,11 @@ During this meeting, our TA suggested that our login should be completed by the 
 in order to test it out properly. We also need release notes done before tomorrow so that we can receive
 the proper grade. Other than that, we need more functionality to our design. We plan on discussing this further during lab and 
 during our next meeting.
+
+MEETING DATE: 4/20/23
+---------------------
+Meeting Duration: 20 mins
+During this meeting, our TA gave us feedback on our project board as well as our organization. She suggested that we break down our tasks
+so that they are not as daunting. We also needed to assign our tasks better so that we are not all working on the same thing. Other than that,
+our progress on the backend needs some work still, which we plan on continuing this week. We also plan on continuing our work on the
+frontend to make everything look better. 
