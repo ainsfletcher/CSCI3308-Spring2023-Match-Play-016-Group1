@@ -266,13 +266,14 @@ app.get("/", (req, res) => {
 
   app.get('/explore', (req, res) => {
     const user_info = [
-      { name: 'John', handicap: 12, age: 21, home_course: "Boulder Creek", movement: "Golf", bio: "I love golf" },
-      { name: 'Sarah', handicap: 18, age: 21, home_course: "Boulder Creek", movement: "Golf", bio: "I love golf" },
-      { name: 'Mike', handicap: 8, age: 21, home_course: "Boulder Creek", movement: "Golf", bio: "I love golf" },
+      { name: 'John', handicap: 12, age: 21, home_course: "Boulder Creek", movement: "walk", bio: "I love golf" },
+      { name: 'Sarah', handicap: 18, age: 21, home_course: "Boulder Creek", movement: "cart", bio: "I love golf" },
+      { name: 'Mike', handicap: 8, age: 21, home_course: "Boulder Creek", movement: "cart", bio: "I love golf" },
     ];
     res.render('pages/explore', { user_info });
-  });  
+  });
 
+  
 function weatherFetch() {
   // const params = {
   //   access_key: '480b7687e691fc4318ab8b673ec91dca',
