@@ -264,7 +264,7 @@ app.get("/", (req, res) => {
   });
 
 
-  app.get("/home", (req, res) => {
+  app.get("/explore", (req, res) => {
     if (!req.session.user) {
         console.log("No active session!");
         return res.render('pages/login', {
@@ -272,9 +272,18 @@ app.get("/", (req, res) => {
         });
     }
 
-    res.render('pages/home')
+    res.render('pages/explore')
     
   });
+
+  app.post("/explore/decline", async (req, res) => {
+
+  });
+
+  app.post("/explore/submit", async (req, res) => {
+
+  });
+
 
 function weatherFetch() {
   // const params = {

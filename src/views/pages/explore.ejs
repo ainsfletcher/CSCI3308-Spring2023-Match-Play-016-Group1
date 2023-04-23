@@ -1,0 +1,27 @@
+<%- include ('../partials/head') %>
+<%- include ('../partials/menu') %>
+<div class="col"><%- include ('../partials/message') %></div>
+
+<main>
+    <div class="container text-center">
+          <h1>Explore</h1>
+            <div class="card">
+                <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                // submit button to add user to liked list of users
+                <form action="/explore/submit" method="POST">
+                    <input type="hidden" name="id" value="<%= user.id %>">
+                    <button type="submit" class="btn btn-success">Like</button>
+                </form>
+                </div>
+                // decline button to remove user from list of users
+                <form action="/explore/decline" method="POST">
+                    <input type="hidden" name="id" value="<%= user.id %>">
+                    <button type="submit" class="btn btn-danger">Decline</button>
+                </form>
+            </div>
+    </div>
+</main>
+
+<%- include ('../partials/footer') %>
