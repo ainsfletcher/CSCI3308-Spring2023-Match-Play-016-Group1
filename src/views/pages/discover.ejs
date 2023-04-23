@@ -1,0 +1,39 @@
+<%- include ('../partials/head') %>
+<%- include ('../partials/menu') %>
+
+<main>
+    <div class="container text-center">
+          <div class="row">
+
+            <% 
+                if(results && results != []){
+                    const res = results
+                    console.log(res);
+                res.forEach(function(res){ %>
+                <div class="col" style="padding-top: 20px">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <p class="card-text"><%- res.name %></p>
+                            <td>
+                                <form method="POST" action="/display">
+                                  <button type="submit" class="btn btn-success">Ace</button>
+                                </form>
+                              </td>
+                              <td>
+                                <form method="POST" action="/display">
+                                  <button type="submit" class="btn btn-danger">Quadruple Bogey</button>
+                                </form>
+                              </td>
+                        </div>
+                    </div>
+                </div>
+               <% }) }
+               else { %>
+                <h1>results: [] error: <%- message %></h1>
+               <% }
+               %>
+        </div>
+    </div>
+</main>
+
+<%- include ('../partials/footer') %>

@@ -276,22 +276,6 @@ app.get("/", (req, res) => {
     
   });
 
-function weatherFetch() {
-  // const params = {
-  //   access_key: '480b7687e691fc4318ab8b673ec91dca',
-  //   query: 'New York'
-  // }
-  
-  // axios.get('http://api.weatherstack.com/current', {params})
-  //   .then(response => {
-  //     const apiResponse = response.data;
-  //     console.log(`Current temperature in ${response.data.current.temperature} is ${response}℃`);
-  //     return response.data;
-  //   }).catch(error => {
-  //     console.log(error);
-  //     return error;
-  //   });
-};
   
 app.get("/weatherAPI", async (req, res) => {
   const params = {
@@ -317,7 +301,35 @@ app.get("/weatherAPI", async (req, res) => {
   
 });
 
+app.get("/display", async (req, res) => {
+  if (!req.session.user) {
+      console.log("No active session!");
+      return res.render('pages/login', {
+        message: "Please log in to view discover page!"
+      });
+  }
 
+  //ensuring that current user is not displayed on discover page
+  const user = req.session.user;
+  const info_id = await userToInfoDB(user);
+  const query = `SELECT * FROM user_info WHERE info_id != $1 ;`;
+
+  try {
+     data = await db.any(query,[info_id]);
+
+    res.status(200).render("pages/discover", {
+      message: "Find your Potential Matches",
+      results: data
+    });
+  } catch (error) {
+    console.log("Error with display users " + error);
+    res.status(400).render("pages/profile", {
+      message: "Cant display!"
+    })
+  }
+
+  
+});
 
   /////////LAB 11/////////////////////
 
