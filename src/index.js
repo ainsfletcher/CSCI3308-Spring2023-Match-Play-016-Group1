@@ -263,27 +263,18 @@ app.get("/", (req, res) => {
 
   });
 
-
-  app.get("/explore", (req, res) => {
+  // get request to display explore page
+  app.get("/explore", async (req, res) => {
     if (!req.session.user) {
-        console.log("No active session!");
-        return res.render('pages/login', {
-          message: "Please log in to view home page!"
-        });
+      console.log("No active session!");
+      return res.render('pages/login', {
+        message: "Please log in to view explore page!"
+      });
     }
 
-    res.render('pages/explore')
-    
-  });
-
-  app.post("/explore/decline", async (req, res) => {
+    res.render("pages/explore")
 
   });
-
-  app.post("/explore/submit", async (req, res) => {
-
-  });
-
 
 function weatherFetch() {
   // const params = {
@@ -322,8 +313,7 @@ app.get("/weatherAPI", async (req, res) => {
       console.log(error);
       return error;
     });
-  
-  
+
 });
 
 
