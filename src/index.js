@@ -263,18 +263,15 @@ app.get("/", (req, res) => {
 
   });
 
-  // get request to display explore page
-  app.get("/explore", async (req, res) => {
-    if (!req.session.user) {
-      console.log("No active session!");
-      return res.render('pages/login', {
-        message: "Please log in to view explore page!"
-      });
-    }
 
-    res.render("pages/explore")
-
-  });
+  app.get('/explore', (req, res) => {
+    const user_info = [
+      { name: 'John', handicap: 12, age: 21, home_course: "Boulder Creek", movement: "Golf", bio: "I love golf" },
+      { name: 'Sarah', handicap: 18, age: 21, home_course: "Boulder Creek", movement: "Golf", bio: "I love golf" },
+      { name: 'Mike', handicap: 8, age: 21, home_course: "Boulder Creek", movement: "Golf", bio: "I love golf" },
+    ];
+    res.render('pages/explore', { user_info });
+  });  
 
 function weatherFetch() {
   // const params = {
