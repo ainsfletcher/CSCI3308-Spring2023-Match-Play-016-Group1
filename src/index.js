@@ -390,6 +390,10 @@ app.post("/match_button", async (req,res) => {
         const query = `INSERT INTO matches (matched_username, active_username, is_match, match_status) VALUES ($1, $2, $3, $4) returning * ; `;
         await db.one(query, [chosen_user.username, active_username, match, "Matched"]);
         
+        // update query to change match_status to matched
+        const updateQuery = `UPDATE matches SET match_status = $1 WHERE matched_username = $2 AND active_username = $3 RETURNING * ;`;
+        await db.one(updateQuery, ["Matched", active_username, chosen_user.username]);
+        
         usersDisplayed = await displayUsers(req.session.user);
         
         return res.render('pages/discover', {
