@@ -83,7 +83,7 @@ app.get("/", (req, res) => {
     let userId = "Nothin";
     const hash = await bcrypt.hash(req.body.password, 10);
     const query = `INSERT INTO users (username, password) VALUES ($1, $2) returning *;`;
-    const infoQuery = `INSERT INTO user_info (name, age, handicap, home_course, movement, bio) VALUES ('blank', 0.0, 0, 'blank', 'blank', 'blank') returning *;`;
+    const infoQuery = `INSERT INTO user_info (name, age, handicap, home_course, movement, bio, phone_number) VALUES ('blank', 0.0, 0, 'blank', 'blank', 'blank', 0) returning *;`;
     const relationalQuery = `INSERT INTO user_to_info (user_id, info_id) VALUES ($1, $2) returning * ;`;
 
     try {
@@ -209,7 +209,7 @@ app.get("/", (req, res) => {
 
     // check if info exists (not undefined) else render page(route is below) w/ message "Please fill all boxes"
     const data = req.body;
-    if(!data.name || !data.handicap || !data.age || !data.home_course || !data.movement || !data.bio ) {
+    if(!data.name || !data.handicap || !data.age || !data.home_course || !data.movement || !data.bio || !data.phone_number) {
       return res.render('pages/profile', {
         message: "Please complete your profile by filling out all information!",
         results: results
@@ -220,7 +220,7 @@ app.get("/", (req, res) => {
     // query to alter at user_id if found (they cant even access this page if they arent logged in)
 
     // const relationalQuery = `SELECT info_id `
-    const alterQuery = `UPDATE user_info SET name = $1, handicap = $2, age = $3, home_course = $4, movement = $5, bio = $6 WHERE info_id = $7 RETURNING * ;`;
+    const alterQuery = `UPDATE user_info SET name = $1, handicap = $2, age = $3, home_course = $4, movement = $5, bio = $6, phone_number = $7 WHERE info_id = $8 RETURNING * ;`;
 
     try {
       // use second query to update db
@@ -232,6 +232,7 @@ app.get("/", (req, res) => {
         data.home_course,
         data.movement,
         data.bio,
+        data.phone_number,
         info_id
       ]);
     } catch (error) {
@@ -376,7 +377,7 @@ app.post("/match_button", async (req,res) => {
         const query = `INSERT INTO matches (matched_username, active_username, is_match, match_status) VALUES ($1, $2, $3, $4) returning * ; `;
         await db.one(query, [chosen_user.username, active_username, match, "Not Matched"]);
         
-        
+
         return res.render('pages/discover', {
           message: "Not a match!",
           results: usersDisplayed

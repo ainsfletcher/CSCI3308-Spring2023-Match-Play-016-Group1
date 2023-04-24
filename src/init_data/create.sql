@@ -13,7 +13,8 @@ CREATE TABLE user_info(
   age SMALLINT NOT NULL,
   home_course VARCHAR(50) NOT NULL,
   movement VARCHAR(10) NOT NULL,
-  bio VARCHAR(500) NOT NULL
+  bio VARCHAR(500) NOT NULL,
+  phone_number INT NOT NULL
 );
 
 DROP TABLE IF EXISTS user_to_info CASCADE;
