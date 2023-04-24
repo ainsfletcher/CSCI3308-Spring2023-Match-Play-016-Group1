@@ -158,10 +158,12 @@ app.get("/", (req, res) => {
 
   });
 
-
-  // app.get("/profile", (req, res) => {
-  //   res.render("pages/profile");
-  // });
+  // Displays all users in the database except for the current user
+  const displayUsers = async (user) => {
+    const info_id = await userToInfoDB(user);
+    const otherUserQuery = `SELECT * FROM user_info WHERE info_id != $1 ;`;
+    return await db.any(otherUserQuery,[info_id]);
+  };
 
   const userToInfoDB = async (user) => {
     try{
@@ -264,17 +266,10 @@ app.get("/", (req, res) => {
 
       data = await db.one(query, [info_id]);
     }
-    // console.log(data);
     res.status(200).render("pages/profile", {
       message: "Welcome! please enter your information",
       results: data
     });
-    // .catch(function (error) {
-    //   console.log("Error logging info in DB - " + error);
-    //   res.status(400).render("pages/profile", {
-    //     message: "Internal server error"
-    //   })
-    // })
 
   });
 
@@ -324,18 +319,14 @@ app.get("/display", async (req, res) => {
       });
   }
 
-  //ensuring that current user is not displayed on discover page
-  const user = req.session.user;
-  const info_id = await userToInfoDB(user);
-  const query = `SELECT * FROM user_info WHERE info_id != $1 ;`;
-
   try {
-     data = await db.any(query,[info_id]);
+    const data = await displayUsers(req.session.user);
 
     res.status(200).render("pages/discover", {
       message: "Find your Potential Matches",
       results: data
     });
+
   } catch (error) {
     console.log("Error with display users " + error);
     res.status(400).render("pages/profile", {
@@ -352,25 +343,84 @@ app.post("/match_button", async (req,res) => {
     });
   }
 
+  const usersDisplayed = await displayUsers(req.session.user);
 
+  // Passing data of chosen user
   const data = JSON.parse(req.body.match_user_info);
-  const username = req.session.user.username;
+  const active_username = req.session.user.username;
   const match = req.body.is_match;
 
-  const user = await infoToUserDB(data);
+  const chosen_user = await infoToUserDB(data);
+
+  // * Searching for previous matches *
+  try {
+    const query = `SELECT * FROM matches WHERE matched_username = $1 AND active_username = $2 LIMIT 1;`;
+    const existing_match = await db.any(query, [active_username, chosen_user.username]);
+    // If match already exists, then end desired functionality
+      // If they both chose green then they are a match
+      // If any one of them chose red then not a match
+   // console.log("Existing match: " + existing_match);
+
+    if (existing_match != "") {
+      console.log("input match: " + (existing_match[0].is_match));
+      if (existing_match[0].is_match && match == "TRUE") {
+        const query = `INSERT INTO matches (matched_username, active_username, is_match, match_status) VALUES ($1, $2, $3, $4) returning * ; `;
+        await db.one(query, [chosen_user.username, active_username, match, "Matched"]);
+        
+
+        return res.render('pages/discover', {
+          message: "You have a match!",
+          results: usersDisplayed
+        })
+      } else {
+        const query = `INSERT INTO matches (matched_username, active_username, is_match, match_status) VALUES ($1, $2, $3, $4) returning * ; `;
+        await db.one(query, [chosen_user.username, active_username, match, "Not Matched"]);
+        
+        
+        return res.render('pages/discover', {
+          message: "Not a match!",
+          results: usersDisplayed
+        })
+      }
+
+    }
+
+    
+  } catch (error) {
+    console.log("Error with searching for previous matches " + error);
+    return res.render('pages/discover', {
+      message: "Error with searching for previous matches!",
+      results: usersDisplayed
+    })
+  }
+
 
   // **********  MATCHING LOGIC **********
   // * Adding user to matches table *
-  // Hello future me, I know this is a mess, but it works. I'm sorry.
-  // I'm sorry for the lack of comments, I'm sorry for the lack of organization, I'm sorry for the lack of sleep.
 
+  try {
+    const query = `INSERT INTO matches (matched_username, active_username, is_match, match_status) VALUES ($1, $2, $3, $4) returning * ; `;
+    await db.one(query, [chosen_user.username, active_username, match, "Pending"]);
+  } catch (error) {
+    console.log("Error with matching " + error);
+    return res.render('pages/discover', {
+      message: "Error with matching!",
+      results: usersDisplayed
+    })
+  }
 
-  const query = `INSERT INTO matches (matched_username, active_username, is_match) VALUES ($1, $2, $3) returning * ; `;
-  
-  const loggedMatch = await db.one(query, [user.username, username, match]);
-  
-
-  return res.redirect("/display");
+  // * Checking if user is in matches table *
+  if (match == "TRUE") {
+    return res.status(200).render("pages/discover", {
+      message: "Checking if its a match :)",
+      results: usersDisplayed
+    });
+  } else {
+    return res.status(200).render("pages/discover", {
+      message: "Not a match :(",
+      results: usersDisplayed
+    });
+  }
 });
 
 app.get("/match_display", async (req,res) => {
@@ -379,32 +429,31 @@ app.get("/match_display", async (req,res) => {
     return res.render('pages/login');
   }
 
-  const query = `SELECT * FROM matches WHERE active_username = $1 AND is_match = true; `;
+  const query = `SELECT * FROM matches WHERE active_username = $1 AND is_match = true AND match_status != $2; `;
 
   try {
-    data = await db.any(query, [req.session.user.username]);
+    data = await db.any(query, [req.session.user.username, "Not Matched"]);
 
-    // const matches = [];
+    const matches = [];
 
-    // data.forEach(async dat => {
-    //   const infoId = await userToInfoDB({username: dat.matched_username});
-    //   const infoQuery = `SELECT * FROM user_info WHERE info_id = $1; `;
-
-    //   const matched_user = await db.one(infoQuery, [infoId]);
-
-    //   //console.log(matched_user);
-    //   matches.push("matched_user");
-      
-    // });
-
-    // console.log(matches);
+    for (let i = 0; i < data.length; i++) {
+      const info_id = await userToInfoDB({username: data[i].matched_username});
+      const infoQuery = `SELECT * FROM user_info WHERE info_id = $1; `;
+      const matched_user = await db.one(infoQuery, [info_id]);
+      matches.unshift(matched_user);
+    }
 
     res.status(200).render("pages/matches", {
-      results: data
+      message: "Your Matches!",
+      results: matches
     });
   } catch (error) {
     console.log("Error with display matches " + error);
-    res.status(400).redirect("/profile");
+    const usersDisplayed = await displayUsers(req.session.user);
+    res.status(400).render("pages/discover", {
+      message: "Error display matches!",
+      results: usersDisplayed
+    });
   }
 
 

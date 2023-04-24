@@ -29,5 +29,6 @@ CREATE TABLE matches(
   match_id SERIAL PRIMARY KEY,
   matched_username VARCHAR(50) NOT NULL,
   active_username VARCHAR(50) NOT NULL,
-  is_match BOOLEAN NOT NULL
+  is_match BOOLEAN NOT NULL,
+  match_status varchar(50) NOT NULL
 );

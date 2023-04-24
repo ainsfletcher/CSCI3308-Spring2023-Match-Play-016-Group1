@@ -15,3 +15,5 @@ INSERT INTO user_to_info (user_id, info_id) VALUES (2, 2);
 INSERT INTO user_to_info (user_id, info_id) VALUES (3, 3);
 INSERT INTO user_to_info (user_id, info_id) VALUES (4, 4);
 INSERT INTO user_to_info (user_id, info_id) VALUES (5, 5);
+
+INSERT INTO matches (matched_username, active_username, is_match, match_status) VALUES ('a', 'user1', TRUE, 'Pending');
