@@ -127,7 +127,7 @@ app.get("/", (req, res) => {
         return res.status(400);
       }
     } catch (error){
-      console.log("database error - from login - most likely: register an account or double check username and password " + error);
+      // console.log("database error - from login - most likely: register an account or double check username and password " + error);
       return res.status(400).render('pages/register', {
         message: "Please register an account or double check username and password!"
       });
@@ -160,9 +160,32 @@ app.get("/", (req, res) => {
 
   // Displays all users in the database except for the current user
   const displayUsers = async (user) => {
+
     const info_id = await userToInfoDB(user);
-    const otherUserQuery = `SELECT * FROM user_info WHERE info_id != $1 ;`;
-    return await db.any(otherUserQuery,[info_id]);
+    const infoQuery = `SELECT * FROM user_info WHERE info_id != $1 ;`;
+    const user_infos = await db.any(infoQuery,[info_id]);
+
+    const usersToDisplay = [];
+
+    for (let i = 0; i < user_infos.length; i++) {
+      usersToDisplay.push(user_infos[i]);
+      const matched_username = (await infoToUserDB(user_infos[i])).username;
+      const active_username = user.username;
+
+      const matchQuery = `SELECT * FROM matches WHERE matched_username = $1 AND active_username = $2;`;
+      const existing_matches = await db.any(matchQuery, [matched_username, active_username]);
+      
+      if (existing_matches.length != 0){
+        for (let j = 0; j < existing_matches.length; j++) {
+          if (existing_matches[j].matched_username == matched_username && existing_matches[j].active_username == active_username){
+            usersToDisplay.pop();
+          }
+        }
+      }
+
+    }
+
+    return usersToDisplay;
   };
 
   const userToInfoDB = async (user) => {
@@ -344,7 +367,7 @@ app.post("/match_button", async (req,res) => {
     });
   }
 
-  const usersDisplayed = await displayUsers(req.session.user);
+  let usersDisplayed = await displayUsers(req.session.user);
 
   // Passing data of chosen user
   const data = JSON.parse(req.body.match_user_info);
@@ -360,15 +383,15 @@ app.post("/match_button", async (req,res) => {
     // If match already exists, then end desired functionality
       // If they both chose green then they are a match
       // If any one of them chose red then not a match
-   // console.log("Existing match: " + existing_match);
 
     if (existing_match != "") {
-      console.log("input match: " + (existing_match[0].is_match));
+      
       if (existing_match[0].is_match && match == "TRUE") {
         const query = `INSERT INTO matches (matched_username, active_username, is_match, match_status) VALUES ($1, $2, $3, $4) returning * ; `;
         await db.one(query, [chosen_user.username, active_username, match, "Matched"]);
         
-
+        usersDisplayed = await displayUsers(req.session.user);
+        
         return res.render('pages/discover', {
           message: "You have a match!",
           results: usersDisplayed
@@ -377,7 +400,7 @@ app.post("/match_button", async (req,res) => {
         const query = `INSERT INTO matches (matched_username, active_username, is_match, match_status) VALUES ($1, $2, $3, $4) returning * ; `;
         await db.one(query, [chosen_user.username, active_username, match, "Not Matched"]);
         
-
+        usersDisplayed = await displayUsers(req.session.user);
         return res.render('pages/discover', {
           message: "Not a match!",
           results: usersDisplayed
@@ -385,9 +408,8 @@ app.post("/match_button", async (req,res) => {
       }
 
     }
-
-    
   } catch (error) {
+    usersDisplayed = await displayUsers(req.session.user);
     console.log("Error with searching for previous matches " + error);
     return res.render('pages/discover', {
       message: "Error with searching for previous matches!",
@@ -402,6 +424,7 @@ app.post("/match_button", async (req,res) => {
   try {
     const query = `INSERT INTO matches (matched_username, active_username, is_match, match_status) VALUES ($1, $2, $3, $4) returning * ; `;
     await db.one(query, [chosen_user.username, active_username, match, "Pending"]);
+    usersDisplayed = await displayUsers(req.session.user);
   } catch (error) {
     console.log("Error with matching " + error);
     return res.render('pages/discover', {
