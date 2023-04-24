@@ -175,6 +175,21 @@ app.get("/", (req, res) => {
     }
 }
 
+  const infoToUserDB = async (info) => {
+    try{
+        const query = `SELECT info_id FROM user_info WHERE info_id = $1 ;`;
+        const infoID = await db.one(query, [info.info_id]);
+
+        const relationQuery = `SELECT user_id FROM user_to_info WHERE info_id = $1`;
+        const uID = (await db.one(relationQuery, [infoID.info_id])).user_id;
+
+        const uQuery = `SELECT * FROM users WHERE user_id = $1 ;`;
+        return (await db.one(uQuery, [uID]));
+    } catch (error){
+        return console.log("ERROR from userToInfoDB - " + error);
+    }
+  }
+
   app.post("/updateInfo", async (req,res) => {
     // Check to make sure req.session.user exists - otherwise redirect to login and yell curse words
     if(!req.session.user){
@@ -245,7 +260,7 @@ app.get("/", (req, res) => {
     if (user) {
       const info_id = await userToInfoDB(user);
 
-      const query = `SELECT * FROM user_info WHERE info_id = $1`;
+      const query = `SELECT * FROM user_info WHERE info_id = $1; `;
 
       data = await db.one(query, [info_id]);
     }
@@ -324,13 +339,76 @@ app.get("/display", async (req, res) => {
   } catch (error) {
     console.log("Error with display users " + error);
     res.status(400).render("pages/profile", {
-      message: "Cant display!"
+      message: "Cant display users!"
     })
   }
-
-  
 });
 
+app.post("/match_button", async (req,res) => {
+  // Check to make sure req.session.user exists - otherwise redirect to login and yell curse words
+  if(!req.session.user){
+    return res.render('pages/login', {
+      message: "Login to match with users!"
+    });
+  }
+
+
+  const data = JSON.parse(req.body.match_user_info);
+  const username = req.session.user.username;
+  const match = req.body.is_match;
+
+  const user = await infoToUserDB(data);
+
+  // **********  MATCHING LOGIC **********
+  // * Adding user to matches table *
+  // Hello future me, I know this is a mess, but it works. I'm sorry.
+  // I'm sorry for the lack of comments, I'm sorry for the lack of organization, I'm sorry for the lack of sleep.
+
+
+  const query = `INSERT INTO matches (matched_username, active_username, is_match) VALUES ($1, $2, $3) returning * ; `;
+  
+  const loggedMatch = await db.one(query, [user.username, username, match]);
+  
+
+  return res.redirect("/display");
+});
+
+app.get("/match_display", async (req,res) => {
+  // Check to make sure req.session.user exists - otherwise redirect to login and yell curse words
+  if(!req.session.user){
+    return res.render('pages/login');
+  }
+
+  const query = `SELECT * FROM matches WHERE active_username = $1 AND is_match = true; `;
+
+  try {
+    data = await db.any(query, [req.session.user.username]);
+
+    // const matches = [];
+
+    // data.forEach(async dat => {
+    //   const infoId = await userToInfoDB({username: dat.matched_username});
+    //   const infoQuery = `SELECT * FROM user_info WHERE info_id = $1; `;
+
+    //   const matched_user = await db.one(infoQuery, [infoId]);
+
+    //   //console.log(matched_user);
+    //   matches.push("matched_user");
+      
+    // });
+
+    // console.log(matches);
+
+    res.status(200).render("pages/matches", {
+      results: data
+    });
+  } catch (error) {
+    console.log("Error with display matches " + error);
+    res.status(400).redirect("/profile");
+  }
+
+
+});
   /////////LAB 11/////////////////////
 
   app.get('/welcome', (req, res) => {

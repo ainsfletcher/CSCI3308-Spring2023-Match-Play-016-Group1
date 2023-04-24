@@ -23,3 +23,11 @@ CREATE TABLE user_to_info(
   FOREIGN KEY (user_id) REFERENCES users (user_id),
   FOREIGN KEY (info_id) REFERENCES user_info (info_id)
 );
+
+DROP TABLE IF EXISTS matches CASCADE;
+CREATE TABLE matches(
+  match_id SERIAL PRIMARY KEY,
+  matched_username VARCHAR(50) NOT NULL,
+  active_username VARCHAR(50) NOT NULL,
+  is_match BOOLEAN NOT NULL
+);
