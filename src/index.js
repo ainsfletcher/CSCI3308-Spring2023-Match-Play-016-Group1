@@ -297,16 +297,16 @@ app.get("/", (req, res) => {
   });
 
 
-  app.get('/explore', (req, res) => {
-    const user_info = [
-      { name: 'John', handicap: 12, age: 21, home_course: "Boulder Creek", movement: "walk", bio: "I love golf" },
-      { name: 'Sarah', handicap: 18, age: 21, home_course: "Boulder Creek", movement: "cart", bio: "I love golf" },
-      { name: 'Mike', handicap: 8, age: 21, home_course: "Boulder Creek", movement: "cart", bio: "I love golf" },
-      { name: 'Sally', handicap: 20, age: 21, home_course: "Boulder Creek", movement: "walk", bio: "I love golf" },
-      { name: 'Bob', handicap: 10, age: 21, home_course: "Boulder Creek", movement: "walk", bio: "I love golf" },
-    ];
-    res.render('pages/explore', { user_info });
-  });
+  // app.get('/explore', (req, res) => {
+  //   const user_info = [
+  //     { name: 'John', handicap: 12, age: 21, home_course: "Boulder Creek", movement: "walk", bio: "I love golf" },
+  //     { name: 'Sarah', handicap: 18, age: 21, home_course: "Boulder Creek", movement: "cart", bio: "I love golf" },
+  //     { name: 'Mike', handicap: 8, age: 21, home_course: "Boulder Creek", movement: "cart", bio: "I love golf" },
+  //     { name: 'Sally', handicap: 20, age: 21, home_course: "Boulder Creek", movement: "walk", bio: "I love golf" },
+  //     { name: 'Bob', handicap: 10, age: 21, home_course: "Boulder Creek", movement: "walk", bio: "I love golf" },
+  //   ];
+  //   res.render('pages/explore', { user_info });
+  // });
   
 app.get("/weatherAPI", async (req, res) => {
   const params = {
@@ -317,7 +317,7 @@ app.get("/weatherAPI", async (req, res) => {
   
   axios.get('http://api.weatherstack.com/current', {params})
     .then(response => {
-      console.log(response.data.current.temperature);
+      // console.log(response.data.current.temperature);
       res.render('pages/weatherinfo', {
         results: response.data.current
       });
