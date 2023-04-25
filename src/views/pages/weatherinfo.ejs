@@ -6,7 +6,18 @@
       <% if (!results) { %>
         <h1>Error with result</h1>
         <% } else { %>
-
+          <table> 
+            <tr>
+              <td>Weather in Boulder</td>
+              <td><div class="card" style="width: 10rem;"><centre>
+                <img class="card-img-top" src="<%- results.weather_icons[0] %>" alt="weather icon">
+                <div class="card-body">
+                  <h1 class = "card-title"><%=results.temperature%>°</h1>
+                  <p class="card-text"></p>
+                </div>
+              </centre></div></td>
+            </tr>
+          </table>
         <div class="card" style="width: 18rem;"><centre>
           <img class="card-img-top" src="<%- results.weather_icons[0] %>" alt="weather icon">
           <div class="card-body">
