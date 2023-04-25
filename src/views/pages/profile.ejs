@@ -29,6 +29,9 @@
                   <h1>
                       <a>Bio: </a><%- results.bio %>
                   </h1>
+                  <h1>
+                    <a>Phone Number: </a><%- results.phone_number %>
+                </h1>
                 </div>
               </div>
         </div>
@@ -62,13 +65,14 @@
                           <label for="handicap">Bio:</label>
                           <input type="text" id="bio" name="bio" />
                       </p>
+                      <p>
+                        <label for="handicap">Phone Number:</label>
+                        <input type="text" id="phone_number" name="phone_number" />
+                    </p>
                       <button type="submit" > Update</button>
                     </form>
                 </div>
               </div>
-              <form action="/weatherAPI" method="GET" autocomplete="off">
-                <button type="submit" > Weather in Current Location</button>
-              </form>
         </div>
     </div>
 </div>

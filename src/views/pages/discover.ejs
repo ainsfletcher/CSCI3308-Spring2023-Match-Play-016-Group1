@@ -1,0 +1,66 @@
+<%- include ('../partials/head') %>
+<%- include ('../partials/menu') %>
+<div class="col text-center"><%- include ('../partials/message') %></div>
+
+<main>
+    <div class="container text-center">
+        <centre>
+            <div class="col" style="padding-top: 20px">
+            <% 
+                if(results && results != []){
+                    const res = results
+                    
+                results.forEach(function(res){ %>
+                <div class="col" style="padding-top: 20px">
+                    <div class="card">
+                        <div class="card-body">
+                            <table class="table">
+                                <thead>
+                                  <tr>
+                                    <img src="/images/epicgolfer.jpg" alt="image" style="padding: 10px; width: 400px;">
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Handicap</th>
+                                    <th scope="col">Age</th>
+                                    <th scope="col">Home Course</th>
+                                    <th scope="col">Movement</th>
+                                    <th scope="col">Bio</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td><%- res.name %></td>
+                                    <td><%- res.handicap %></td>
+                                    <td><%- res.age %></td>
+                                    <td><%- res.home_course %></td>
+                                    <td><%- res.movement %></td>
+                                    <td><%- res.bio %></td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            <td>
+                                <form method="POST" action="/match_button">
+                                    <input type="hidden" id="match_user_info" name="match_user_info" value="<%= JSON.stringify(res) %>">
+                                    <input type="hidden" id="match_user_info" name="is_match" value="TRUE">
+                                  <button type="submit" class="btn btn-success">Ace</button>
+                                </form>
+                              </td>
+                              <td>
+                                <form method="POST" action="/match_button">
+                                    <input type="hidden" id="match_user_info" name="match_user_info" value="<%= JSON.stringify(res) %>">
+                                    <input type="hidden" id="match_user_info" name="is_match" value="FALSE">
+                                  <button type="submit" class="btn btn-danger">Quadruple Bogey</button>
+                                </form>
+                              </td>
+                        </div>
+                    </div>
+                </div>
+               <% }) }
+               else { %>
+                <h1>results: [] error: <%- message %></h1>
+               <% }
+               %>
+            </centre>
+    </div>
+</main>
+
+<%- include ('../partials/footer') %>
