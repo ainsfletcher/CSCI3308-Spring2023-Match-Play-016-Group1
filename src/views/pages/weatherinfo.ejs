@@ -1,19 +1,41 @@
 <%- include ('../partials/head') %>
 <%- include ('../partials/menu') %>
 
-<main>
+  
+<main> 
+  <style>body{
+    background-image:url(
+"https://cdn.wallpapersafari.com/27/57/aLU7s1.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed; 
+    background-size: 100% 100%;
+}</style>
   <div class="container text-center">
       <% if (!results) { %>
         <h1>Error with result</h1>
         <% } else { %>
-
-        <div class="card" style="width: 18rem;"><centre>
-          <img class="card-img-top" src="<%- results.weather_icons[0] %>" alt="weather icon">
-          <div class="card-body">
-            <h1 class = "card-title"><%=results.temperature%>°</h1>
-            <p class="card-text"></p>
-          </div>
-        </centre></div>
+          <table style="margin-left: auto;margin-right: auto;padding-top: 75px;"> 
+            <tr>
+              <td style="padding: 75px; background-color: cornflowerblue;"><h1>Weather in Boulder, CO : </h1></td>
+              <td><div class="card" style="width: 10rem;"><centre>
+                <img class="card-img-top" src="<%- results.weather_icons[0] %>" alt="weather icon">
+                <div class="card-body">
+                  <h1 class = "card-title"><%=results.temperature%>°</h1>
+                  <p class="card-text"></p>
+                </div>
+              </centre></div></td>
+            </tr>
+            <tr>
+              <td style="padding: 75px; background-color: cornflowerblue;"><h1>Weather in Denver, CO : </h1></td>
+              <td><div class="card" style="width: 10rem;"><centre>
+                <img class="card-img-top" src="<%- results.weather_icons[0] %>" alt="weather icon">
+                <div class="card-body">
+                  <h1 class = "card-title"><%=results.temperature[1]%>°</h1>
+                  <p class="card-text"></p>
+                </div>
+              </centre></div></td>
+            </tr>
+          </table>
         <% } %>
   </div>
 </main>

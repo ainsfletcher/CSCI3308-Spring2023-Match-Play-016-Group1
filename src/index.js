@@ -296,7 +296,13 @@ function weatherFetch() {
 app.get("/weatherAPI", async (req, res) => {
   const params = {
     access_key: process.env.WEATHER_API_KEY,
-    query: 'Boulder',
+    query: 'Boulder;Denver;',
+    units: 'f'
+  }
+
+  const params1 = {
+    access_key: process.env.WEATHER_API_KEY,
+    query: 'Denver',
     units: 'f'
   }
   
@@ -309,10 +315,23 @@ app.get("/weatherAPI", async (req, res) => {
       // const apiResponse = response.data;
       // console.log(`Current temperature in ${response.data.current.temperature} is ${response}℃`);
       // res.status(200).send(`Your data: ${response.data.location.name}`);
-    }).catch(error => {
+    })
+  // axios.get('http://api.weatherstack.com/current', {params1})
+  //   .then(response => {
+  //     console.log(response.data.current.temperature);
+  //     res.render('pages/weatherinfo', {
+  //       results: response.data.current
+  //     });
+      // const apiResponse = response.data;
+      // console.log(`Current temperature in ${response.data.current.temperature} is ${response}℃`);
+      // res.status(200).send(`Your data: ${response.data.location.name}`);
+    // })
+    .catch(error => {
       console.log(error);
       return error;
     });
+
+
   
   
 });
