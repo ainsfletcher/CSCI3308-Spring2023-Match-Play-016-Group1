@@ -1,9 +1,9 @@
-INSERT INTO users (username, password) VALUES ('user1', 'Yes');
-INSERT INTO users (username, password) VALUES ('user2', 'Yes');
-INSERT INTO users (username, password) VALUES ('user3', 'Yes');
-INSERT INTO users (username, password) VALUES ('user4', 'Yes');
-INSERT INTO users (username, password) VALUES ('user5', 'Yes');
-INSERT INTO users (username, password) VALUES ('user5', 'Yes');
+INSERT INTO users (username, password) VALUES ('Adam', 'Yes');
+INSERT INTO users (username, password) VALUES ('Ainsley', 'Yes');
+INSERT INTO users (username, password) VALUES ('Shaun', 'Yes');
+INSERT INTO users (username, password) VALUES ('Moses', 'Yes');
+INSERT INTO users (username, password) VALUES ('Matthew', 'Yes');
+INSERT INTO users (username, password) VALUES ('Nate', 'Yes');
 
 INSERT INTO user_info (name, handicap, age, home_course, movement, bio, phone_number) VALUES ('Adam', 10.0, 20, 'Boulder', 'Walk', 'Hey', 1234567890);
 INSERT INTO user_info (name, handicap, age, home_course, movement, bio, phone_number) VALUES ('Ainsley', 11.0, 30, 'Boulder', 'Cart', 'Hey', 1234567890);
