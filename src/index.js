@@ -297,18 +297,16 @@ app.get("/", (req, res) => {
   });
 
 
-  app.get("/home", (req, res) => {
-    if (!req.session.user) {
-        console.log("No active session!");
-        return res.render('pages/login', {
-          message: "Please log in to view home page!"
-        });
-    }
-
-    res.render('pages/home')
-    
+  app.get('/explore', (req, res) => {
+    const user_info = [
+      { name: 'John', handicap: 12, age: 21, home_course: "Boulder Creek", movement: "walk", bio: "I love golf" },
+      { name: 'Sarah', handicap: 18, age: 21, home_course: "Boulder Creek", movement: "cart", bio: "I love golf" },
+      { name: 'Mike', handicap: 8, age: 21, home_course: "Boulder Creek", movement: "cart", bio: "I love golf" },
+      { name: 'Sally', handicap: 20, age: 21, home_course: "Boulder Creek", movement: "walk", bio: "I love golf" },
+      { name: 'Bob', handicap: 10, age: 21, home_course: "Boulder Creek", movement: "walk", bio: "I love golf" },
+    ];
+    res.render('pages/explore', { user_info });
   });
-
   
 app.get("/weatherAPI", async (req, res) => {
   const params = {
@@ -330,8 +328,7 @@ app.get("/weatherAPI", async (req, res) => {
       console.log(error);
       return error;
     });
-  
-  
+
 });
 
 app.get("/display", async (req, res) => {

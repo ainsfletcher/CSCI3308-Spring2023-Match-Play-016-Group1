@@ -1,12 +1,12 @@
 DROP TABLE IF EXISTS users CASCADE;
-CREATE TABLE users(
+CREATE TABLE IF NOT EXISTS users(
   user_id SERIAL PRIMARY KEY,
   username VARCHAR(50) NOT NULL,
   password CHAR(60) NOT NULL
 );
 
 DROP TABLE IF EXISTS user_info CASCADE;
-CREATE TABLE user_info(
+CREATE TABLE IF NOT EXISTS user_info(
   info_id SERIAL PRIMARY KEY,
   name VARCHAR(50) NOT NULL,
   handicap DOUBLE PRECISION NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE user_info(
 );
 
 DROP TABLE IF EXISTS user_to_info CASCADE;
-CREATE TABLE user_to_info(
+CREATE TABLE IF NOT EXISTS user_to_info(
   user_id INT NOT NULL,
   info_id INT NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users (user_id),

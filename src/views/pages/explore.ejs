@@ -1,0 +1,69 @@
+<%- include ('../partials/head') %>
+<%- include ('../partials/menu') %>
+
+<div class="col">
+  <%- include ('../partials/message') %>
+</div>
+
+<style>
+body {
+    background-image: url("../images/BoulderGolfCourse.jpg");
+    background-size: cover;
+}
+</style>
+<main>
+  <div class="container text-center">
+    <div class="row">
+      <div class="col"></div>
+      <div class="col">
+        <div class="card" style="width: 60rem;">
+          <div class="card-header">
+            Explore
+          </div>
+          <div class="card-body">
+            <h1>Find Your Next MatchPlay</h1>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th style="width: 15%">Name</th>
+                  <th style="width: 10%">Handicap</th>
+                  <th style="width: 10%">Age</th>
+                  <th style="width: 20%">Home Course</th>
+                  <th style="width: 15%">Movement</th>
+                  <th style="width: 20%">Bio</th>
+                  <th style="width: 5%">Ace</th>
+                  <th style="width: 5%">Quadruple Bogey</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% for (var i = 0; i < user_info.length; i++) { %>
+                  <tr>
+                    <td><%= user_info[i].name %></td>
+                    <td><%= user_info[i].handicap %></td>
+                    <td><%= user_info[i].age %></td>
+                    <td><%= user_info[i].home_course %></td>
+                    <td><%= user_info[i].movement %></td>
+                    <td><%= user_info[i].bio %></td>
+                    <td>
+                      <form method="POST" action="/like/<%= user_info[i]._id %>">
+                        <button type="submit" class="btn btn-success">Ace</button>
+                      </form>
+                    </td>
+                    <td>
+                      <form method="POST" action="/dislike/<%= user_info[i]._id %>">
+                        <button type="submit" class="btn btn-danger">Quadruple Bogey</button>
+                      </form>
+                    </td>
+                  </tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col"></div>
+    </div>
+  </div>
+</main>
+
+<%- include ('../partials/footer') %>
