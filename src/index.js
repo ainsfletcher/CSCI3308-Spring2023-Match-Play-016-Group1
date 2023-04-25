@@ -8,7 +8,6 @@ const bcrypt = require('bcrypt'); //  To hash passwords
 const axios = require('axios'); // To make HTTP requests from our server. We'll learn more about it in Part B.
 const db = require("./resources/js/dbConnection");
 
-
 // // database configuration
 // const dbConfig = {
 //   host: 'db', // the database server
@@ -440,7 +439,7 @@ app.post("/match_button", async (req,res) => {
   // * Checking if user is in matches table *
   if (match == "TRUE") {
     return res.status(200).render("pages/discover", {
-      message: "Checking if its a match :)",
+      message: "Match Pending... Check back later to see if this user matched with you!",
       results: usersDisplayed
     });
   } else {
@@ -494,7 +493,9 @@ app.get("/match_display", async (req,res) => {
 
   //////////////////////////////////////
 //app.listen(3000);
-// New commit from Ains new laptop!
+
+app.use('/images', express.static('resources/img'));
+
 try {
   module.exports = app.listen(3000);
   console.log('Server is listening on port 3000');

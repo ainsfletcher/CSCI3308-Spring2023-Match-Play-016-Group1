@@ -17,6 +17,7 @@
                             <table class="table">
                                 <thead>
                                   <tr>
+                                    <img src="/images/epicgolfer.jpg" alt="image" style="padding: 10px; width: 400px;">
                                     <th scope="col">Name</th>
                                     <th scope="col">Handicap</th>
                                     <th scope="col">Age</th>
@@ -37,9 +38,6 @@
                                 </tbody>
                               </table>
                             <td>
-                                <div>
-
-                                    <!-- <img src="../../resources/img/epicgolfer.jpg" alt="image" style="padding: 10px; width: 100px;"> -->
                                 <form method="POST" action="/match_button">
                                     <input type="hidden" id="match_user_info" name="match_user_info" value="<%= JSON.stringify(res) %>">
                                     <input type="hidden" id="match_user_info" name="is_match" value="TRUE">
