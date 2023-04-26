@@ -24,6 +24,6 @@
       "start": "node ./index.js",
       "dev": "./node_modules/nodemon/bin/nodemon.js -L CSCI3308-Spring2023-Strokr-016-Group1/src",
       "test": "mocha",
-      "testandrun": "npm run prestart && npm run test && npm run start"
+      "testandrun": "npm run prestart && npm run test && npm run dev"
   }
 }
