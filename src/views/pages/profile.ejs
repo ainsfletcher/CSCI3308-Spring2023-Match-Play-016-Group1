@@ -3,6 +3,17 @@
 <div class="col"><%- include ('../partials/message') %></div>
 
 <main>
+
+  <style>
+    body{
+        background-image:url(
+        "https://i.redd.it/e3tdj6oimx231.jpg");
+        background-repeat: no-repeat;
+        background-attachment: fixed; 
+        background-size: 100% 100%;
+    }
+</style>
+
   <div class="container">
 
     <div class="card-deck">
@@ -10,27 +21,29 @@
         <div class="col-lg-6 mb-4">
             <div class="card">
                 <div class="card-body">
-                  <h2> Your Info: </h2>
+                <div class="container">
+                <h2> Welcome to matchPlay <%- results.name %>! </h2>
+                </div>
                   <h1>
-                      <a>Name: </a> <%- results.name %>
+                      <a>Name -> </a> <%- results.name %>
                   </h1>
                   <h1>
-                      <a>Handicap: </a><%- results.handicap %>
+                      <a>Handicap -> </a><%- results.handicap %>
                   </h1>
                   <h1>
-                      <a>Age: </a> <%- results.age %>
+                      <a>Age -> </a> <%- results.age %>
                   </h1>
                   <h1>
-                      <a>Home Course: </a><%- results.home_course %>
+                      <a>Home Course -> </a><%- results.home_course %>
                   </h1>
                   <h1>
-                      <a>Movement: </a> <%- results.movement %>
+                      <a>Movement -> </a> <%- results.movement %>
                   </h1>
                   <h1>
-                      <a>Bio: </a><%- results.bio %>
+                      <a>Bio -> </a><%- results.bio %>
                   </h1>
                   <h1>
-                    <a>Phone Number: </a><%- results.phone_number %>
+                    <a>Phone Number -> </a><%- results.phone_number %>
                 </h1>
                 </div>
               </div>
@@ -69,7 +82,7 @@
                         <label for="handicap">Phone Number:</label>
                         <input type="text" id="phone_number" name="phone_number" />
                     </p>
-                      <button type="submit" > Update</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
                     </form>
                 </div>
               </div>
