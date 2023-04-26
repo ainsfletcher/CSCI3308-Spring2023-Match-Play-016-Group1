@@ -8,3 +8,18 @@ using this API would work, so we might change this our for using an API to check
 We also discussed the layout and the amount of pages we want in our website. We ultimately decided on a login/registration,
 a home page where the user can begin finding matches, a connect page where the users can message each other, profile page, 
 and weather page.
+
+MEETING DATE: 4/18/23
+----------------------
+Meeting Duration: 45 minutes
+During this meeting Nhat, Adam and Ainsley met to discuss backend. We decided that it might be incredibly difficult to store
+images using postgres, so we are putting that idea on hold for now. In the meantime, we are working on the backend for the 
+weather API, the matching, and the profile page. We have our main group meeting tomorrow.
+
+MEETING DATE: 4/20/23
+----------------------
+Meeting Duration: 50 minute
+During this meeting we all met to discuss the changes and pushes that have been made, we found a couple bugs that need to be
+ addressed uncluding the weather function, the profile page, and explore page. We made a schedule to work on the front end
+ and "pretty up" the look. We plan on asking Nikita about our messaging function still have to make a plan to implement that.
+ We plan on making 5 users to initialize the database and to build our explore page upon.

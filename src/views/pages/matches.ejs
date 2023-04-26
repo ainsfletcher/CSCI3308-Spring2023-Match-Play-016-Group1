@@ -1,0 +1,64 @@
+<%- include ('../partials/head') %>
+<%- include ('../partials/menu') %>
+<div class="col text-center"><%- include ('../partials/message') %></div>
+
+<main>
+
+<style>
+  body{
+      background-image:url(
+      "https://i.pinimg.com/originals/c3/dc/f6/c3dcf6a1d5d3878d0312c39c99c4756c.jpg");
+      background-repeat: no-repeat;
+      background-attachment: fixed; 
+      background-size: 100% 100%;
+  }
+</style>
+    <div class="container text-center">
+        <centre>
+            <div class="col" style="padding-top: 20px">
+            <% 
+                if(locals.results && results != []){ 
+                    results.forEach(function(res){ %>
+                        <div class="col" style="padding-top: 20px">
+                            <div class="card">
+                                <div class="card-body">
+                                    <table class="table">
+                                        <thead>
+                                          <tr>
+                                            <img src="/images/epicgolfer.jpg" alt="image" style="padding: 10px; width: 400px;">
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Handicap</th>
+                                            <th scope="col">Age</th>
+                                            <th scope="col">Home Course</th>
+                                            <th scope="col">Movement</th>
+                                            <th scope="col">Bio</th>
+                                            <th scope="col">Phone Number</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          <tr>
+                                            <td><%- res.name %></td>
+                                            <td><%- res.handicap %></td>
+                                            <td><%- res.age %></td>
+                                            <td><%- res.home_course %></td>
+                                            <td><%- res.movement %></td>
+                                            <td><%- res.bio %></td>
+                                            <td><%- res.phone_number %></td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                </div>
+                            </div>
+                        </div>
+                    %>
+                    
+                <% }) } 
+               else { %>
+                <h1>results: [] </h1>
+               <% }
+               %>
+            </centre>
+    </div>
+</main>
+
+<%- include ('../partials/footer') %>
