@@ -16,6 +16,9 @@
   
     <div class="container text-center">
         <centre>
+            <div class="card">
+              <h1>Find Your Next MatchPlay!</h1>
+            </div>
             <div class="col" style="padding-top: 20px">
             <% 
                 if(results && results != []){
@@ -25,6 +28,7 @@
                 <div class="col" style="padding-top: 20px">
                     <div class="card">
                         <div class="card-body">
+                          <div class="card-body">
                             <table class="table">
                                 <thead>
                                   <tr>
@@ -48,20 +52,28 @@
                                   </tr>
                                 </tbody>
                               </table>
-                            <td>
-                                <form method="POST" action="/match_button">
-                                    <input type="hidden" id="match_user_info" name="match_user_info" value="<%= JSON.stringify(res) %>">
-                                    <input type="hidden" id="match_user_info" name="is_match" value="TRUE">
-                                  <button type="submit" class="btn btn-success">Ace</button>
-                                </form>
-                              </td>
-                              <td>
-                                <form method="POST" action="/match_button">
-                                    <input type="hidden" id="match_user_info" name="match_user_info" value="<%= JSON.stringify(res) %>">
-                                    <input type="hidden" id="match_user_info" name="is_match" value="FALSE">
-                                  <button type="submit" class="btn btn-danger">Quadruple Bogey</button>
-                                </form>
-                              </td>
+                              <div class="container">
+                              <div class="row">
+                                <div class="col-sm">
+                                <td>
+                                  <form method="POST" action="/match_button">
+                                      <input type="hidden" id="match_user_info" name="match_user_info" value="<%= JSON.stringify(res) %>">
+                                      <input type="hidden" id="match_user_info" name="is_match" value="FALSE">
+                                    <button type="submit" class="btn btn-danger">Quadruple Bogey</button>
+                                  </form>
+                                </td>
+                                </div>
+                                <div class="col-sm">
+                                <td>
+                                  <form method="POST" action="/match_button">
+                                      <input type="hidden" id="match_user_info" name="match_user_info" value="<%= JSON.stringify(res) %>">
+                                      <input type="hidden" id="match_user_info" name="is_match" value="TRUE">
+                                    <button type="submit" class="btn btn-success">Ace</button>
+                                  </form>
+                                </td>
+                                </div>
+                              </div>
+                            </div>
                         </div>
                     </div>
                 </div>
