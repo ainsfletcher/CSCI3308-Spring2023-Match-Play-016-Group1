@@ -31,6 +31,7 @@ const db = require("./resources/js/dbConnection");
 
 app.set('view engine', 'ejs'); // set the view engine to EJS
 app.use(bodyParser.json()); // specify the usage of JSON for parsing request body.
+app.use(express.static('resources'))
 
 
 // initialize session variables
