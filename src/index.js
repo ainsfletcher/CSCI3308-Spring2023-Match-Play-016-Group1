@@ -343,7 +343,7 @@ app.get("/display", async (req, res) => {
     const data = await displayUsers(req.session.user);
 
     res.status(200).render("pages/discover", {
-      message: "Find your Potential Matches",
+      message: "Find your next matchPlay!",
       results: data
     });
 
