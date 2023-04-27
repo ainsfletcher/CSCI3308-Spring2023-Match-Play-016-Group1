@@ -285,7 +285,6 @@ app.get("/", (req, res) => {
       data = await db.one(query, [info_id]);
     }
     res.status(200).render("pages/profile", {
-      message: "Welcome to matchPlay! Please enter your information",
       results: data
     });
 
@@ -459,6 +458,7 @@ app.get("/match_display", async (req,res) => {
       const info_id = await userToInfoDB({username: data[i].matched_username});
       const infoQuery = `SELECT * FROM user_info WHERE info_id = $1; `;
       const matched_user = await db.one(infoQuery, [info_id]);
+      matched_user["match_status"] = data[i].match_status;
       matches.unshift(matched_user);
     }
 
