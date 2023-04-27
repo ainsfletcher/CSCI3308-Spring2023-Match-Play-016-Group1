@@ -19,41 +19,44 @@
     <div class="card-deck">
       <div class="row">
         <div class="col-lg-6 mb-4">
-            <div class="card">
+            <div class="card text-white bg-success mb-3" style="width: 40rem;">
                 <div class="card-body">
                 <div class="container">
                 <h2> Welcome to matchPlay <%- results.name %>! </h2>
+                <table class="table">
+                <thead>
+                    <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Handicap</th>
+                    <th scope="col">Age</th>
+                    <th scope="col">Home Course</th>
+                    <th scope="col">Movement</th>
+                    <th scope="col">Bio</th>
+                    <th scope="col">Phone Number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    <td><%- results.name %></td>
+                    <td><%- results.handicap %></td>
+                    <td><%- results.age %></td>
+                    <td><%- results.home_course %></td>
+                    <td><%- results.movement %></td>
+                    <td><%- results.bio %></td>
+                    <td><%- results.phone_number %></td>
+                    </tr>
+                </tbody>
+                </table>
                 </div>
-                  <h1>
-                      <a>Name -> </a> <%- results.name %>
-                  </h1>
-                  <h1>
-                      <a>Handicap -> </a><%- results.handicap %>
-                  </h1>
-                  <h1>
-                      <a>Age -> </a> <%- results.age %>
-                  </h1>
-                  <h1>
-                      <a>Home Course -> </a><%- results.home_course %>
-                  </h1>
-                  <h1>
-                      <a>Movement -> </a> <%- results.movement %>
-                  </h1>
-                  <h1>
-                      <a>Bio -> </a><%- results.bio %>
-                  </h1>
-                  <h1>
-                    <a>Phone Number -> </a><%- results.phone_number %>
-                </h1>
                 </div>
-              </div>
+            </div>
         </div>
+
         <div class="col-lg-6 mb-4">
-            <div class="card">
+            <div class="card text-white bg-success mb-3" style="width: 40rem;">
                 <div class="card-body">
                   <h2> Edit Your Profile</h2>
                   <form action="/updateInfo" method="POST" autocomplete="off">
-                      
                       <p>
                           <label for="name">Name:</label>
                           <input type="text" id="name" name="name" />

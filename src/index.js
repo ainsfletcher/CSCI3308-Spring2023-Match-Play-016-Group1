@@ -285,7 +285,7 @@ app.get("/", (req, res) => {
       data = await db.one(query, [info_id]);
     }
     res.status(200).render("pages/profile", {
-      message: "Welcome! please enter your information",
+      message: "Welcome to matchPlay! Please enter your information",
       results: data
     });
 
