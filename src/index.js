@@ -332,37 +332,6 @@ app.get("/weatherAPI", async (req, res) => {
     console.log(error);
   });
 
-  // const params = {
-  //   access_key: process.env.WEATHER_API_KEY,
-  //   query: 'Boulder',
-  //   units: 'f'
-  // }
-
-  // axios.get('http://api.weatherstack.com/current', {params})
-  //   .then(response => {
-  //     const boulder = response.data.current;
-  //     console.log(boulder.temperature);
-  //     res.render('pages/weatherinfo', {
-  //       results: boulder
-  //     });
-  //   })
-
-
-  // axios.get('http://api.weatherstack.com/current', {params1})
-  //   .then(response => {
-  //     const denver = response.data.current;
-  //     console.log(denver.temperature);
-  //     res.render('pages/weatherinfo', {
-  //       results: [boulder, denver]
-  //     });
-  //   })
-
-  
-    // .catch(error => {
-    //   console.log(error);
-    //   return error;
-    // });
-
 });
 
 app.get("/display", async (req, res) => {
