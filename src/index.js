@@ -303,25 +303,28 @@ app.get("/", (req, res) => {
   // });
   
 app.get("/weatherAPI", async (req, res) => {
-  const params = {
-    access_key: process.env.WEATHER_API_KEY,
-    query: 'Boulder',
-    units: 'f'
-  }
+
+  const cities = [
+    {query: 'Boulder', units: 'f'},
+    {query: 'Denver', units: 'f'},
+    {query: 'Fort Collins', units: 'f'},
+    {query: 'Colorado Springs', units: 'f'},
+    {query: 'Vail', units: 'f'}
+  ];
   
-  axios.get('http://api.weatherstack.com/current', {params})
-    .then(response => {
-      // console.log(response.data.current.temperature);
-      res.render('pages/weatherinfo', {
-        results: response.data.current
-      });
-      // const apiResponse = response.data;
-      // console.log(`Current temperature in ${response.data.current.temperature} is ${response}℃`);
-      // res.status(200).send(`Your data: ${response.data.location.name}`);
-    }).catch(error => {
-      console.log(error);
-      return error;
+  Promise.all(cities.map(city => {
+    const apiKey = "fa93bd63602c38ff1ee8dffd86efe8b4";
+    const params = {access_key: apiKey, ...city};
+    return axios.get('http://api.weatherstack.com/current', {params});
+  })).then(responses => {
+    const weatherData = responses.map(response => response.data.current);
+    //console.log(weatherData);
+    res.render('pages/weatherinfo', {
+      results: weatherData
     });
+  }).catch(error => {
+    console.log(error);
+  });
 
 });
 

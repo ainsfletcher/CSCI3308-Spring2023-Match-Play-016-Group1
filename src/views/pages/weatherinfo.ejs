@@ -1,30 +1,71 @@
 <%- include ('../partials/head') %>
 <%- include ('../partials/menu') %>
 
-<main>
+  
+<main> 
+  <style>body{
+    background-image:url(
+"https://cdn.wallpapersafari.com/27/57/aLU7s1.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed; 
+    background-size: 100% 100%;
+}</style>
   <div class="container text-center">
       <% if (!results) { %>
         <h1>Error with result</h1>
         <% } else { %>
-          <table> 
+          <table style="margin-left: auto;margin-right: auto;padding-top: 75px;"> 
             <tr>
-              <td>Weather in Boulder</td>
+              <td style="padding: 75px; background-color: cornflowerblue;"><h1>Weather in Boulder, CO : </h1></td>
               <td><div class="card" style="width: 10rem;"><centre>
-                <img class="card-img-top" src="<%- results.weather_icons[0] %>" alt="weather icon">
+                <img class="card-img-top" src="<%- results[0].weather_icons[0] %>" alt="weather icon">
                 <div class="card-body">
-                  <h1 class = "card-title"><%=results.temperature%>°</h1>
+                  <h1 class = "card-title"><%=results[0].temperature%>°</h1>
+                  <p class="card-text"></p>
+                </div>
+              </centre></div></td>
+            </tr>
+            <tr>
+              <td style="padding: 75px; background-color: cornflowerblue;"><h1>Weather in Denver, CO : </h1></td>
+              <td><div class="card" style="width: 10rem;"><centre>
+                <img class="card-img-top" src="<%- results[1].weather_icons[0] %>" alt="weather icon">
+                <div class="card-body">
+                  <h1 class = "card-title"><%=results[1].temperature%>°</h1>
+                  <p class="card-text"></p>
+                </div>
+              </centre></div></td>
+            </tr>
+            <tr>
+              <td style="padding: 75px; background-color: cornflowerblue;"><h1>Weather in Fort Collins, CO : </h1></td>
+              <td><div class="card" style="width: 10rem;"><centre>
+                <img class="card-img-top" src="<%- results[2].weather_icons[0] %>" alt="weather icon">
+                <div class="card-body">
+                  <h1 class = "card-title"><%=results[2].temperature%>°</h1>
+                  <p class="card-text"></p>
+                </div>
+              </centre></div></td>
+            </tr>
+            <tr>
+              <td style="padding: 75px; background-color: cornflowerblue;"><h1>Weather in Colorado Springs, CO : </h1></td>
+              <td><div class="card" style="width: 10rem;"><centre>
+                <img class="card-img-top" src="<%- results[3].weather_icons[0] %>" alt="weather icon">
+                <div class="card-body">
+                  <h1 class = "card-title"><%=results[3].temperature%>°</h1>
+                  <p class="card-text"></p>
+                </div>
+              </centre></div></td>
+            </tr>
+            <tr>
+              <td style="padding: 75px; background-color: cornflowerblue;"><h1>Weather in Vail, CO : </h1></td>
+              <td><div class="card" style="width: 10rem;"><centre>
+                <img class="card-img-top" src="<%- results[4].weather_icons[0] %>" alt="weather icon">
+                <div class="card-body">
+                  <h1 class = "card-title"><%=results[4].temperature%>°</h1>
                   <p class="card-text"></p>
                 </div>
               </centre></div></td>
             </tr>
           </table>
-        <div class="card" style="width: 18rem;"><centre>
-          <img class="card-img-top" src="<%- results.weather_icons[0] %>" alt="weather icon">
-          <div class="card-body">
-            <h1 class = "card-title"><%=results.temperature%>°</h1>
-            <p class="card-text"></p>
-          </div>
-        </centre></div>
         <% } %>
   </div>
 </main>
