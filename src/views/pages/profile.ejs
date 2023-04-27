@@ -1,99 +1,160 @@
-<%- include ('../partials/head') %> 
+<%- include ('../partials/head') %>
 <%- include ('../partials/menu') %>
 <div class="col"><%- include ('../partials/message') %></div>
 
 <main>
 
   <style>
-    body{
-        background-image:url(
-        "https://i.redd.it/e3tdj6oimx231.jpg");
+    body {
+        background-image: url("https://i.redd.it/e3tdj6oimx231.jpg");
         background-repeat: no-repeat;
-        background-attachment: fixed; 
+        background-attachment: fixed;
         background-size: 100% 100%;
+        font-family: 'Arial', sans-serif;
     }
-</style>
+
+    h2, h1 {
+        color: #3a3a3a;
+    }
+
+    .card {
+        border-radius: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-body {
+        background-color: #ffffff;
+        padding: 20px;
+    }
+
+    input[type="text"] {
+        border: 1px solid #c1c1c1;
+        border-radius: 5px;
+        padding: 5px;
+        width: 100%;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .btn-success {
+        background-color: #1f7a1f;
+        border-radius: 5px;
+        border: none;
+        color: #ffffff;
+        cursor: pointer;
+        font-size: 1rem;
+        margin-top: 10px;
+        padding: 10px 20px;
+        text-align: center;
+    }
+
+    .edit-button {
+        background-color: #1f7a1f;
+        border-radius: 5px;
+        border: none;
+        color: #ffffff;
+        cursor: pointer;
+        font-size: 1rem;
+        margin-top: 10px;
+        padding: 10px 20px;
+        text-align: center;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    .info-label {
+      font-weight: bold;
+    }
+  </style>
 
   <div class="container">
-
     <div class="card-deck">
       <div class="row">
         <div class="col-lg-6 mb-4">
             <div class="card">
                 <div class="card-body">
-                <div class="container">
-                <h2> Welcome to matchPlay <%- results.name %>! </h2>
+                  <div class="container">
+                    <h2> Welcome to matchPlay, <%- results.name %>! </h2>
+                    </div>
+                    <h1>
+                        <span class="info-label">Name:</span> <%- results.name %>
+                    </h1>
+                    <h1>
+                        <span class="info-label">Handicap:</span> <%- results.handicap %>
+                    </h1>
+                    <h1>
+                        <span class="info-label">Age:</span> <%- results.age %>
+                    </h1>
+                    <h1>
+                        <span class="info-label">Home Course:</span> <%- results.home_course %>
+                    </h1>
+                    <h1>
+                        <span class="info-label">Movement:</span> <%- results.movement %>
+                    </h1>
+                    <h1>
+                        <span class="info-label">Bio:</span> <%- results.bio %>
+                    </h1>
+                    <h1>
+                        <span class="info-label">Phone Number:</span> <%- results.phone_number %>
+                    </h1>
                 </div>
-                  <h1>
-                      <a>Name -> </a> <%- results.name %>
-                  </h1>
-                  <h1>
-                      <a>Handicap -> </a><%- results.handicap %>
-                  </h1>
-                  <h1>
-                      <a>Age -> </a> <%- results.age %>
-                  </h1>
-                  <h1>
-                      <a>Home Course -> </a><%- results.home_course %>
-                  </h1>
-                  <h1>
-                      <a>Movement -> </a> <%- results.movement %>
-                  </h1>
-                  <h1>
-                      <a>Bio -> </a><%- results.bio %>
-                  </h1>
-                  <h1>
-                    <a>Phone Number -> </a><%- results.phone_number %>
-                </h1>
+                  </div>
+                  <button class="edit-button" onclick="toggleEdit()">Edit</button>
                 </div>
               </div>
         </div>
         <div class="col-lg-6 mb-4">
             <div class="card">
                 <div class="card-body">
-                  <h2> Edit Your Profile</h2>
-                  <form action="/updateInfo" method="POST" autocomplete="off">
-                      
-                      <p>
-                          <label for="name">Name:</label>
-                          <input type="text" id="name" name="name" />
-                      </p>
-                      <p>
-                          <label for="handicap">Handicap:</label>
-                          <input type="text" id="handicap" name="handicap" />
-                      </p>
-                      <p>
-                          <label for="age">Age:</label>
-                          <input type="text" id="age" name="age" />
-                      </p>
-                      <p>
-                          <label for="home_course">Home Course:</label>
-                          <input type="text" id="home_course" name="home_course" />
-                      </p>
-                      <p>
-                          <label for="movement">Movement:</label>
-                          <input type="text" id="movement" name="movement" />
-                      </p>
-                      <p>
-                          <label for="handicap">Bio:</label>
-                          <input type="text" id="bio" name="bio" />
-                      </p>
-                      <p>
-                        <label for="handicap">Phone Number:</label>
-                        <input type="text" id="phone_number" name="phone_number" />
+                  <form action="/updateInfo" method="POST" autocomplete="off" id="edit-form" style="display:none;">
+                    <p>
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" />
                     </p>
-                    <button type="submit" class="btn btn-success">Update</button>
-                    </form>
+                    <p>
+                        <label for="handicap">Handicap:</label>
+                        <input type="text" id="handicap" name="handicap" />
+                    </p>
+                    <p>
+                        <label for="age">Age:</label>
+                        <input type="text" id="age" name="age" />
+                    </p>
+                    <p>
+                        <label for="home_course">Home Course:</label>
+                        <input type="text" id="home_course" name="home_course" />
+                    </p>
+                    <p>
+                        <label for="movement">Movement:</label>
+                        <input type="text" id="movement" name="movement" />
+                    </p>
+                    <p>
+                        <label for="handicap">Bio:</label>
+                        <input type="text" id="bio" name="bio" />
+                    </p>
+                    <p>
+                      <label for="handicap">Phone Number:</label>
+                      <input type="text" id="phone_number" name="phone_number" />
+                  </p>                      
+                        <button type="submit" class="btn btn-success">Update</button>
+                  </form>
                 </div>
               </div>
         </div>
     </div>
-</div>
-    <!-- <div class = "mb-3 form-check">
-        <label class = "form-check-label" for="exampleCheck1">Don't have an account?</label>
-        <a href="/register"> Register</a>
-      </div> -->
   </div>
 </main>
 
 <%- include ('../partials/footer') %>
+<script>
+  function toggleEdit() {
+    var editForm = document.getElementById("edit-form");
+    if (editForm.style.display === "none") {
+      editForm.style.display = "block";
+    } else {
+      editForm.style.display = "none";
+    }
+  }
+</script>

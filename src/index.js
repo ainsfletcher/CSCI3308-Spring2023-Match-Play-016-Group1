@@ -215,55 +215,55 @@ app.get("/", (req, res) => {
         return console.log("ERROR from userToInfoDB - " + error);
     }
   }
+  //old update  
+  // app.post("/updateInfo", async (req,res) => {
+  //   // Check to make sure req.session.user exists - otherwise redirect to login and yell curse words
+  //   if(!req.session.user){
+  //     return res.render('pages/login',{
+  //       message: "login to update info"
+  //     });
+  //   }
 
-  app.post("/updateInfo", async (req,res) => {
-    // Check to make sure req.session.user exists - otherwise redirect to login and yell curse words
-    if(!req.session.user){
-      return res.render('pages/login',{
-        message: "login to update info"
-      });
-    }
+  //   const user = req.session.user;
+  //   const info_id = await userToInfoDB(user);
 
-    const user = req.session.user;
-    const info_id = await userToInfoDB(user);
+  //   const query = `SELECT * FROM user_info WHERE info_id = $1`;
 
-    const query = `SELECT * FROM user_info WHERE info_id = $1`;
+  //   const results = await db.one(query, [info_id]);
 
-    const results = await db.one(query, [info_id]);
-
-    // check if info exists (not undefined) else render page(route is below) w/ message "Please fill all boxes"
-    const data = req.body;
-    if(!data.name || !data.handicap || !data.age || !data.home_course || !data.movement || !data.bio || !data.phone_number) {
-      return res.render('pages/profile', {
-        message: "Please complete your profile by filling out all information!",
-        results: results
-      });
-    };
+  //   // check if info exists (not undefined) else render page(route is below) w/ message "Please fill all boxes"
+  //   const data = req.body;
+  //   if(!data.name || !data.handicap || !data.age || !data.home_course || !data.movement || !data.bio || !data.phone_number) {
+  //     return res.render('pages/profile', {
+  //       message: "Please complete your profile by filling out all information!",
+  //       results: results
+  //     });
+  //   };
 
 
-    // query to alter at user_id if found (they cant even access this page if they arent logged in)
+  //   // query to alter at user_id if found (they cant even access this page if they arent logged in)
 
-    // const relationalQuery = `SELECT info_id `
-    const alterQuery = `UPDATE user_info SET name = $1, handicap = $2, age = $3, home_course = $4, movement = $5, bio = $6, phone_number = $7 WHERE info_id = $8 RETURNING * ;`;
+  //   // const relationalQuery = `SELECT info_id `
+  //   const alterQuery = `UPDATE user_info SET name = $1, handicap = $2, age = $3, home_course = $4, movement = $5, bio = $6, phone_number = $7 WHERE info_id = $8 RETURNING * ;`;
 
-    try {
-      // use second query to update db
-      // render new profile page (route is below) with success! message and show new info
-      db.one(alterQuery, [
-        data.name,
-        data.handicap,
-        data.age,
-        data.home_course,
-        data.movement,
-        data.bio,
-        data.phone_number,
-        info_id
-      ]);
-    } catch (error) {
-      console.log("Internal server error when grabbing user info for PUT req: /updateinfo - " + error);
-    }
-    return res.redirect("/profile");
-  });
+  //   try {
+  //     // use second query to update db
+  //     // render new profile page (route is below) with success! message and show new info
+  //     db.one(alterQuery, [
+  //       data.name,
+  //       data.handicap,
+  //       data.age,
+  //       data.home_course,
+  //       data.movement,
+  //       data.bio,
+  //       data.phone_number,
+  //       info_id
+  //     ]);
+  //   } catch (error) {
+  //     console.log("Internal server error when grabbing user info for PUT req: /updateinfo - " + error);
+  //   }
+  //   return res.redirect("/profile");
+  // });
 
   app.get("/profile", async (req, res) => {
     if (!req.session.user) {
@@ -271,7 +271,7 @@ app.get("/", (req, res) => {
       return res.render('pages/login', {
         message: "Please log in to view profile page!"
       });
-  }
+    }
 
     const user = req.session.user;
     // console.log("USER" + user);
@@ -296,6 +296,74 @@ app.get("/", (req, res) => {
       results: data
     });
 
+  });
+//new update
+  app.post("/updateInfo", async (req, res) => {
+    // Check to make sure req.session.user exists - otherwise redirect to login and yell curse words
+    if(!req.session.user){
+      return res.render('pages/login',{
+        message: "login to update info"
+      });
+    }
+
+    const user = req.session.user;
+    const info_id = await userToInfoDB(user);
+
+    const query = `SELECT * FROM user_info WHERE info_id = $1`;
+
+    const results = await db.one(query, [info_id]);
+  
+    const data = req.body;
+  
+    // Prepare the updated user data
+    const updatedUserData = [];
+  
+    let alterQuery = 'UPDATE user_info SET ';
+  
+    if (data.name) {
+      updatedUserData.push(data.name);
+      alterQuery += `name = $${updatedUserData.length}, `;
+    }
+    if (data.handicap) {
+      updatedUserData.push(data.handicap);
+      alterQuery += `handicap = $${updatedUserData.length}, `;
+    }
+    if (data.age) {
+      updatedUserData.push(data.age);
+      alterQuery += `age = $${updatedUserData.length}, `;
+    }
+    if (data.home_course) {
+      updatedUserData.push(data.home_course);
+      alterQuery += `home_course = $${updatedUserData.length}, `;
+    }
+    if (data.movement) {
+      updatedUserData.push(data.movement);
+      alterQuery += `movement = $${updatedUserData.length}, `;
+    }
+    if (data.bio) {
+      updatedUserData.push(data.bio);
+      alterQuery += `bio = $${updatedUserData.length}, `;
+    }
+    if (data.phone_number) {
+      updatedUserData.push(data.phone_number);
+      alterQuery += `phone_number = $${updatedUserData.length}, `;
+    }
+  
+    // Remove the trailing comma and space from the query
+    alterQuery = alterQuery.slice(0, -2);
+  
+    // Add the WHERE clause and info_id parameter
+    updatedUserData.push(info_id);
+    alterQuery += ` WHERE info_id = $${updatedUserData.length} RETURNING * ;`;
+
+    try {
+      // use second query to update db
+      // render new profile page (route is below) with success! message and show new info
+      db.one(alterQuery, updatedUserData);
+    } catch (error) {
+      console.log("Internal server error when grabbing user info for PUT req: /updateinfo - " + error);
+    }
+    return res.redirect("/profile");
   });
 
 
@@ -501,3 +569,4 @@ try {
 } catch (error) {
   console.log('Server failed - ' + error);
 }
+
