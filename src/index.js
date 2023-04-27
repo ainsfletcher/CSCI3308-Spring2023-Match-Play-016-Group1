@@ -459,6 +459,7 @@ app.get("/match_display", async (req,res) => {
       const info_id = await userToInfoDB({username: data[i].matched_username});
       const infoQuery = `SELECT * FROM user_info WHERE info_id = $1; `;
       const matched_user = await db.one(infoQuery, [info_id]);
+      matched_user["match_status"] = data[i].match_status;
       matches.unshift(matched_user);
     }
 
