@@ -3,6 +3,16 @@
 <div class="col text-center"><%- include ('../partials/message') %></div>
 
 <main>
+
+<style>
+  body{
+      background-image:url(
+      "https://i.pinimg.com/originals/c3/dc/f6/c3dcf6a1d5d3878d0312c39c99c4756c.jpg");
+      background-repeat: no-repeat;
+      background-attachment: fixed; 
+      background-size: 100% 100%;
+  }
+</style>
     <div class="container text-center">
         <centre>
             <div class="col" style="padding-top: 20px">
@@ -23,6 +33,7 @@
                                             <th scope="col">Movement</th>
                                             <th scope="col">Bio</th>
                                             <th scope="col">Phone Number</th>
+                                            <th scope="col">Match Status</th>
                                           </tr>
                                         </thead>
                                         <tbody>
@@ -34,6 +45,7 @@
                                             <td><%- res.movement %></td>
                                             <td><%- res.bio %></td>
                                             <td><%- res.phone_number %></td>
+                                            <td><%- res.match_status %></td>
                                           </tr>
                                         </tbody>
                                       </table>
