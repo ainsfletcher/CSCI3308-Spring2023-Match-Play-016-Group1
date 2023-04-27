@@ -227,36 +227,29 @@ app.get("/", (req, res) => {
     const user = req.session.user;
     const info_id = await userToInfoDB(user);
 
-    const query = `SELECT * FROM user_info WHERE info_id = $1`;
+    const query = `SELECT * FROM user_info WHERE info_id = $1; `;
 
     const results = await db.one(query, [info_id]);
 
     // check if info exists (not undefined) else render page(route is below) w/ message "Please fill all boxes"
-    const data = req.body;
-    if(!data.name || !data.handicap || !data.age || !data.home_course || !data.movement || !data.bio || !data.phone_number) {
-      return res.render('pages/profile', {
-        message: "Please complete your profile by filling out all information!",
-        results: results
-      });
-    };
-
+    const data = req.body
 
     // query to alter at user_id if found (they cant even access this page if they arent logged in)
 
-    // const relationalQuery = `SELECT info_id `
+    // const relationalQuery = SELECT info_id 
     const alterQuery = `UPDATE user_info SET name = $1, handicap = $2, age = $3, home_course = $4, movement = $5, bio = $6, phone_number = $7 WHERE info_id = $8 RETURNING * ;`;
 
     try {
       // use second query to update db
       // render new profile page (route is below) with success! message and show new info
       db.one(alterQuery, [
-        data.name,
-        data.handicap,
-        data.age,
-        data.home_course,
-        data.movement,
-        data.bio,
-        data.phone_number,
+        data.name || results.name,
+        data.handicap || results.handicap,
+        data.age || results.age,
+        data.home_course || results.home_course,
+        data.movement || results.movement,
+        data.bio || results.bio,
+        data.phone_number || results.phone_number,
         info_id
       ]);
     } catch (error) {
