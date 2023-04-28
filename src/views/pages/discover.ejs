@@ -59,7 +59,7 @@
                                   <form method="POST" action="/match_button">
                                       <input type="hidden" id="match_user_info" name="match_user_info" value="<%= JSON.stringify(res) %>">
                                       <input type="hidden" id="match_user_info" name="is_match" value="FALSE">
-                                    <button type="submit" class="btn btn-danger">Dislike</button>
+                                    <button type="submit" class="btn btn-light"> <p class="text-danger">Dislike</p> </button>
                                   </form>
                                 </td>
                                 </div>
@@ -68,7 +68,7 @@
                                   <form method="POST" action="/match_button">
                                       <input type="hidden" id="match_user_info" name="match_user_info" value="<%= JSON.stringify(res) %>">
                                       <input type="hidden" id="match_user_info" name="is_match" value="TRUE">
-                                    <button type="submit" class="btn btn-success">Like</button>
+                                    <button type="submit" class="btn btn-light"> <p class="text-success">Like</p> </button> 
                                   </form>
                                 </td>
                                 </div>
