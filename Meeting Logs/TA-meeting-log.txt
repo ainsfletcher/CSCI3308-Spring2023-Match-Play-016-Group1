@@ -14,3 +14,8 @@ During this meeting, our TA gave us feedback on our project board as well as our
 so that they are not as daunting. We also needed to assign our tasks better so that we are not all working on the same thing. Other than that,
 our progress on the backend needs some work still, which we plan on continuing this week. We also plan on continuing our work on the
 frontend to make everything look better. 
+
+MEETING DATE: 4/27/23
+---------------------
+Nikita was pleased with our work this week. We all got a lot done and are in a great position to have a stress free 
+last week. With a little more front end work we will have a nice finished project.

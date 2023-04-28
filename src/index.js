@@ -304,6 +304,10 @@ app.get("/", (req, res) => {
   
 app.get("/weatherAPI", async (req, res) => {
 
+  if(!req.session.user){
+    return res.render('pages/login');
+  }
+
   const cities = [
     {query: 'Boulder', units: 'f'},
     {query: 'Denver', units: 'f'},
