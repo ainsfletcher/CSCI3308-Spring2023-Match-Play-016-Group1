@@ -13,45 +13,43 @@
         background-size: 100% 100%;
     }
 </style>
-
-  <div class="container">
-    <br>
+<h2 class=" text-center"> Welcome to matchPlay! </h2>
+  <!-- profile card start here -->
+<div class="container">
     <div class="card-deck">
       <div class="row">
+          <!-- left card -->
         <div class="col-lg-6 mb-4">
-            <div class="card text-white bg-success mb-3" style="width: 40rem;">
+            <div class="card"> 
                 <div class="card-body">
                 <div class="container">
-                <h2> Welcome to matchPlay <%- results.name %>! </h2>
-                <table class="table">
-                <thead>
-                    <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Handicap</th>
-                    <th scope="col">Age</th>
-                    <th scope="col">Home Course</th>
-                    <th scope="col">Movement</th>
-                    <th scope="col">Bio</th>
-                    <th scope="col">Phone Number</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                    <td><%- results.name %></td>
-                    <td><%- results.handicap %></td>
-                    <td><%- results.age %></td>
-                    <td><%- results.home_course %></td>
-                    <td><%- results.movement %></td>
-                    <td><%- results.bio %></td>
-                    <td><%- results.phone_number %></td>
-                    </tr>
-                </tbody>
-                </table>
+                <!-- <h2> Welcome to matchPlay <%- results.name %>! </h2> -->
                 </div>
+                  <h1>
+                      <a>Name : </a> <%- results.name %>
+                  </h1>
+                  <h1>
+                      <a>Handicap : </a><%- results.handicap %>
+                  </h1>
+                  <h1>
+                      <a>Age : </a> <%- results.age %>
+                  </h1>
+                  <h1>
+                      <a>Home Course : </a><%- results.home_course %>
+                  </h1>
+                  <h1>
+                      <a>Movement : </a> <%- results.movement %>
+                  </h1>
+                  <h1>
+                      <a>Bio : </a><%- results.bio %>
+                  </h1>
+                  <h1>
+                    <a>Phone Number : </a><%- results.phone_number %>
+                </h1>
                 </div>
             </div>
         </div>
-
+       <!-- right card -->
         <div class="col-lg-6 mb-4">
             <div class="card text-white bg-success mb-3" style="width: 40rem;">
                 <div class="card-body">
@@ -59,44 +57,37 @@
                   <form action="/updateInfo" method="POST" autocomplete="off">
                       <p>
                           <label for="name">Name:</label>
-                          <input type="text" id="name" name="name" />
+                          <input type="text" id="name" name="name" placeholder="Enter name"/>
                       </p>
                       <p>
                           <label for="handicap">Handicap:</label>
-                          <input type="text" id="handicap" name="handicap" />
+                          <input type="text" id="handicap" name="handicap" placeholder="Enter handicap"/>
                       </p>
                       <p>
                           <label for="age">Age:</label>
-                          <input type="text" id="age" name="age" />
+                          <input type="text" id="age" name="age" placeholder="Enter your age"/>
                       </p>
                       <p>
                           <label for="home_course">Home Course:</label>
-                          <input type="text" id="home_course" name="home_course" />
+                          <input type="text" id="home_course" name="home_course" placeholder="Enter password" />
                       </p>
                       <p>
                           <label for="movement">Movement:</label>
-                          <input type="text" id="movement" name="movement" />
+                          <input type="text" id="movement" name="movement" placeholder="Enter password"/>
                       </p>
                       <p>
                           <label for="handicap">Bio:</label>
-                          <input type="text" id="bio" name="bio" />
+                          <input type="text" id="bio" name="bio" placeholder="Enter Handicap"/>
                       </p>
                       <p>
                         <label for="handicap">Phone Number:</label>
-                        <input type="text" id="phone_number" name="phone_number" />
+                        <input type="text" id="phone_number" name="phone_number" placeholder="Enter Phone Number ex: 720-xxx-xxxx"/>
                     </p>
-                    <button type="submit" class="btn btn-success">Update</button>
+                    <button type="submit" class="btn btn-light"><p class="text-success">Update</p></button>
                     </form>
                 </div>
               </div>
         </div>
     </div>
-</div>
-    <!-- <div class = "mb-3 form-check">
-        <label class = "form-check-label" for="exampleCheck1">Don't have an account?</label>
-        <a href="/register"> Register</a>
-      </div> -->
-  </div>
 </main>
-
 <%- include ('../partials/footer') %>
