@@ -17,7 +17,7 @@
     <div class="container text-center">
         <centre>
           <div class="card text-white bg-success mb-3" style="max-width: 80rem;">
-              <h1 id="type"></h1>
+              <h1>Find Your Next MatchPlay!</h1>
             </div>
             <div class="col" style="padding-top: 20px">
             <% 
@@ -85,18 +85,5 @@
             </centre>
     </div>
 </main>
-<script>
-    var i = 0;
-    var txt = 'Find Your Next MatchPlay!'; /* The text */
-    var speed = 75; /* The speed/duration of the effect in milliseconds */
 
-    function typeWriter() {
-      if (i < txt.length) {
-        document.getElementById("type").innerHTML += txt.charAt(i);
-        i++;
-        setTimeout(typeWriter, speed);
-      }
-    }
-    window.onload= typeWriter();
-</script>
 <%- include ('../partials/footer') %>
