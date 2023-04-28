@@ -9,21 +9,24 @@
         background-image: url("https://i.redd.it/e3tdj6oimx231.jpg");
         background-repeat: no-repeat;
         background-attachment: fixed;
-        background-size: 100% 100%;
+        background-size: cover;
         font-family: 'Arial', sans-serif;
     }
 
     h2, h1 {
-        color: #3a3a3a;
+        color: white;
     }
 
     .card {
+        background-color: grey;
         border-radius: 20px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin: 0 auto;
+        max-width: 900px;
     }
 
     .card-body {
-        background-color: #ffffff;
+        background-color: grey;
         padding: 20px;
     }
 
@@ -68,48 +71,48 @@
     .info-label {
       font-weight: bold;
     }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
   </style>
 
-  <div class="container">
-    <div class="card-deck">
-      <div class="row">
-        <div class="col-lg-6 mb-4">
-            <div class="card">
-                <div class="card-body">
-                  <div class="container">
-                    <h2> Welcome to matchPlay, <%- results.name %>! </h2>
-                    </div>
-                    <h1>
-                        <span class="info-label">Name:</span> <%- results.name %>
-                    </h1>
-                    <h1>
-                        <span class="info-label">Handicap:</span> <%- results.handicap %>
-                    </h1>
-                    <h1>
-                        <span class="info-label">Age:</span> <%- results.age %>
-                    </h1>
-                    <h1>
-                        <span class="info-label">Home Course:</span> <%- results.home_course %>
-                    </h1>
-                    <h1>
-                        <span class="info-label">Movement:</span> <%- results.movement %>
-                    </h1>
-                    <h1>
-                        <span class="info-label">Bio:</span> <%- results.bio %>
-                    </h1>
-                    <h1>
-                        <span class="info-label">Phone Number:</span> <%- results.phone_number %>
-                    </h1>
-                </div>
-                  </div>
-                  <button class="edit-button" onclick="toggleEdit()">Edit</button>
+<div class="container">
+    <div class="row">
+      <div class="card">
+        <div class="card-body">
+          <h2> Welcome to matchPlay, <%- results.name %>! </h2>
+          <div class="row">
+            <div class="col-lg-6">
+              <h1>
+                  <span class="info-label">Name:</span> <%- results.name %>
+              </h1>
+              <h1>
+                  <span class="info-label">Handicap:</span> <%- results.handicap %>
+              </h1>
+              <h1>
+                  <span class="info-label">Age:</span> <%- results.age %>
+              </h1>
+              <h1>
+                  <span class="info-label">Home Course:</span> <%- results.home_course %>
+              </h1>
+              <h1>
+                  <span class="info-label">Movement:</span> <%- results.movement %>
+              </h1>
+              <h1>
+                  <span class="info-label">Bio:</span> <%- results.bio %>
+              </h1>
+              <h1>
+                  <span class="info-label">Phone Number:</span> <%- results.phone_number %>
+              </h1>
+              <button class="edit-button" onclick="toggleEdit()">Edit</button>
                 </div>
               </div>
-        </div>
-        <div class="col-lg-6 mb-4">
-            <div class="card">
-                <div class="card-body">
-                  <form action="/updateInfo" method="POST" autocomplete="off" id="edit-form" style="display:none;">
+              <div class="col-lg-6" id="card-edit" style="display:none;">
+                <div class="card">
+                  <div class="card-body">
+                  <form action="/updateInfo" method="POST" autocomplete="off" id="edit-form">
                     <p>
                         <label for="name">Name:</label>
                         <input type="text" id="name" name="name" />
@@ -131,30 +134,30 @@
                         <input type="text" id="movement" name="movement" />
                     </p>
                     <p>
-                        <label for="handicap">Bio:</label>
+                        <label for="bio">Bio:</label>
                         <input type="text" id="bio" name="bio" />
                     </p>
                     <p>
-                      <label for="handicap">Phone Number:</label>
+                      <label for="phone_number">Phone Number:</label>
                       <input type="text" id="phone_number" name="phone_number" />
-                  </p>                      
+                    </p>                      
                         <button type="submit" class="btn btn-success">Update</button>
                   </form>
                 </div>
               </div>
         </div>
     </div>
-  </div>
+</div>
 </main>
-
 <%- include ('../partials/footer') %>
+
 <script>
-  function toggleEdit() {
-    var editForm = document.getElementById("edit-form");
-    if (editForm.style.display === "none") {
-      editForm.style.display = "block";
-    } else {
-      editForm.style.display = "none";
+    function toggleEdit() {
+      var editForm = document.getElementById("card-edit");
+      if (editForm.style.display === "none") {
+        editForm.style.display = "block";
+      } else {
+        editForm.style.display = "none";
+      }
     }
-  }
-</script>
+  </script>
