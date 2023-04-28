@@ -44,7 +44,13 @@
                                             <td><%- res.home_course %></td>
                                             <td><%- res.movement %></td>
                                             <td><%- res.bio %></td>
-                                            <td><%- res.phone_number %></td>
+                                           
+                                            <% if (res.match_status != "Pending") { %>
+                                              <td><%- res.phone_number %></td>
+                                            <%} else { %>
+                                              <td> Match to see their phone number</td>
+                                            <% } %>
+                                              
                                             <td><%- res.match_status %></td>
                                           </tr>
                                         </tbody>
