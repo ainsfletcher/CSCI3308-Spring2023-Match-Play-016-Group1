@@ -23,3 +23,10 @@ During this meeting we all met to discuss the changes and pushes that have been 
  addressed uncluding the weather function, the profile page, and explore page. We made a schedule to work on the front end
  and "pretty up" the look. We plan on asking Nikita about our messaging function still have to make a plan to implement that.
  We plan on making 5 users to initialize the database and to build our explore page upon.
+
+MEETING DATE: 4/27/23
+---------------------
+Meeting Duration: 1 hour
+During this meeting we talked about what we've done this past week. We all agreeed that we're making great progress. Moses is still trying 
+figure out how to store images in postgres but we have faith. Our plans for the last week are to wrap up our matches page and then 
+focus on front end development and making the website pretty and sleek.

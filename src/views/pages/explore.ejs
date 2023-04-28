@@ -46,12 +46,12 @@ body {
                     <td><%= user_info[i].bio %></td>
                     <td>
                       <form method="POST" action="/like/<%= user_info[i]._id %>">
-                        <button type="submit" class="btn btn-success">Ace</button>
+                        <button type="submit" class="btn btn-success">Like</button>
                       </form>
                     </td>
                     <td>
                       <form method="POST" action="/dislike/<%= user_info[i]._id %>">
-                        <button type="submit" class="btn btn-danger">Quadruple Bogey</button>
+                        <button type="submit" class="btn btn-danger">Dislike</button>
                       </form>
                     </td>
                   </tr>
