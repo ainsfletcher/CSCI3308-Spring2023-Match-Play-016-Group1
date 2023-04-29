@@ -216,6 +216,48 @@ app.get("/", (req, res) => {
     }
   }
 
+  app.post("/updateInfo", async (req,res) => {
+    // Check to make sure req.session.user exists - otherwise redirect to login and yell curse words
+    if(!req.session.user){
+      return res.render('pages/login',{
+        message: "login to update info"
+      });
+    }
+
+    const user = req.session.user;
+    const info_id = await userToInfoDB(user);
+
+    const query = `SELECT * FROM user_info WHERE info_id = $1; `;
+
+    const results = await db.one(query, [info_id]);
+
+    // check if info exists (not undefined) else render page(route is below) w/ message "Please fill all boxes"
+    const data = req.body
+
+    // query to alter at user_id if found (they cant even access this page if they arent logged in)
+
+    // const relationalQuery = SELECT info_id 
+    const alterQuery = `UPDATE user_info SET name = $1, handicap = $2, age = $3, home_course = $4, movement = $5, bio = $6, phone_number = $7 WHERE info_id = $8 RETURNING * ;`;
+
+    try {
+      // use second query to update db
+      // render new profile page (route is below) with success! message and show new info
+      db.one(alterQuery, [
+        data.name || results.name,
+        data.handicap || results.handicap,
+        data.age || results.age,
+        data.home_course || results.home_course,
+        data.movement || results.movement,
+        data.bio || results.bio,
+        data.phone_number || results.phone_number,
+        info_id
+      ]);
+    } catch (error) {
+      console.log("Internal server error when grabbing user info for PUT req: /updateinfo - " + error);
+    }
+    return res.redirect("/profile");
+  });
+
   app.get("/profile", async (req, res) => {
     if (!req.session.user) {
       console.log("No active session!");
@@ -243,7 +285,6 @@ app.get("/", (req, res) => {
       data = await db.one(query, [info_id]);
     }
     res.status(200).render("pages/profile", {
-      message: "Welcome! please enter your information",
       results: data
     });
 
@@ -330,25 +371,32 @@ app.get("/", (req, res) => {
   // });
   
 app.get("/weatherAPI", async (req, res) => {
-  const params = {
-    access_key: process.env.WEATHER_API_KEY,
-    query: 'Boulder',
-    units: 'f'
+
+  if(!req.session.user){
+    return res.render('pages/login');
   }
+
+  const cities = [
+    {query: 'Boulder', units: 'f'},
+    {query: 'Denver', units: 'f'},
+    {query: 'Fort Collins', units: 'f'},
+    {query: 'Colorado Springs', units: 'f'},
+    {query: 'Vail', units: 'f'}
+  ];
   
-  axios.get('http://api.weatherstack.com/current', {params})
-    .then(response => {
-      // console.log(response.data.current.temperature);
-      res.render('pages/weatherinfo', {
-        results: response.data.current
-      });
-      // const apiResponse = response.data;
-      // console.log(`Current temperature in ${response.data.current.temperature} is ${response}℃`);
-      // res.status(200).send(`Your data: ${response.data.location.name}`);
-    }).catch(error => {
-      console.log(error);
-      return error;
+  Promise.all(cities.map(city => {
+    const apiKey = "fa93bd63602c38ff1ee8dffd86efe8b4";
+    const params = {access_key: apiKey, ...city};
+    return axios.get('http://api.weatherstack.com/current', {params});
+  })).then(responses => {
+    const weatherData = responses.map(response => response.data.current);
+    //console.log(weatherData);
+    res.render('pages/weatherinfo', {
+      results: weatherData
     });
+  }).catch(error => {
+    console.log(error);
+  });
 
 });
 
@@ -485,6 +533,7 @@ app.get("/match_display", async (req,res) => {
       const info_id = await userToInfoDB({username: data[i].matched_username});
       const infoQuery = `SELECT * FROM user_info WHERE info_id = $1; `;
       const matched_user = await db.one(infoQuery, [info_id]);
+      matched_user["match_status"] = data[i].match_status;
       matches.unshift(matched_user);
     }
 

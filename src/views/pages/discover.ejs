@@ -16,7 +16,7 @@
   
     <div class="container text-center">
         <centre>
-            <div class="card">
+          <div class="card text-white bg-success mb-3" style="max-width: 80rem;">
               <h1>Find Your Next MatchPlay!</h1>
             </div>
             <div class="col" style="padding-top: 20px">
@@ -26,7 +26,7 @@
                     
                 results.forEach(function(res){ %>
                 <div class="col" style="padding-top: 20px">
-                    <div class="card">
+                    <div class="card text-white bg-success mb-3" style="max-width: 80rem;">
                         <div class="card-body">
                           <div class="card-body">
                             <table class="table">
@@ -59,7 +59,7 @@
                                   <form method="POST" action="/match_button">
                                       <input type="hidden" id="match_user_info" name="match_user_info" value="<%= JSON.stringify(res) %>">
                                       <input type="hidden" id="match_user_info" name="is_match" value="FALSE">
-                                    <button type="submit" class="btn btn-danger">Quadruple Bogey</button>
+                                    <button type="submit" class="btn btn-light"> <p class="text-danger">Dislike</p> </button>
                                   </form>
                                 </td>
                                 </div>
@@ -68,7 +68,7 @@
                                   <form method="POST" action="/match_button">
                                       <input type="hidden" id="match_user_info" name="match_user_info" value="<%= JSON.stringify(res) %>">
                                       <input type="hidden" id="match_user_info" name="is_match" value="TRUE">
-                                    <button type="submit" class="btn btn-success">Ace</button>
+                                    <button type="submit" class="btn btn-light"> <p class="text-success">Like</p> </button> 
                                   </form>
                                 </td>
                                 </div>
