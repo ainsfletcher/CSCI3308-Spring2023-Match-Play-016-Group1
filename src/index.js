@@ -264,7 +264,7 @@ app.get("/", (req, res) => {
       return res.render('pages/login', {
         message: "Please log in to view profile page!"
       });
-  }
+    }
 
     const user = req.session.user;
     // console.log("USER" + user);
@@ -288,6 +288,74 @@ app.get("/", (req, res) => {
       results: data
     });
 
+  });
+  //new update
+  app.post("/updateInfo", async (req, res) => {
+    // Check to make sure req.session.user exists - otherwise redirect to login and yell curse words
+    if(!req.session.user){
+      return res.render('pages/login',{
+        message: "login to update info"
+      });
+    }
+
+    const user = req.session.user;
+    const info_id = await userToInfoDB(user);
+
+    const query = `SELECT * FROM user_info WHERE info_id = $1`;
+
+    const results = await db.one(query, [info_id]);
+  
+    const data = req.body;
+  
+    // Prepare the updated user data
+    const updatedUserData = [];
+  
+    let alterQuery = 'UPDATE user_info SET ';
+  
+    if (data.name) {
+      updatedUserData.push(data.name);
+      alterQuery += `name = $${updatedUserData.length}, `;
+    }
+    if (data.handicap) {
+      updatedUserData.push(data.handicap);
+      alterQuery += `handicap = $${updatedUserData.length}, `;
+    }
+    if (data.age) {
+      updatedUserData.push(data.age);
+      alterQuery += `age = $${updatedUserData.length}, `;
+    }
+    if (data.home_course) {
+      updatedUserData.push(data.home_course);
+      alterQuery += `home_course = $${updatedUserData.length}, `;
+    }
+    if (data.movement) {
+      updatedUserData.push(data.movement);
+      alterQuery += `movement = $${updatedUserData.length}, `;
+    }
+    if (data.bio) {
+      updatedUserData.push(data.bio);
+      alterQuery += `bio = $${updatedUserData.length}, `;
+    }
+    if (data.phone_number) {
+      updatedUserData.push(data.phone_number);
+      alterQuery += `phone_number = $${updatedUserData.length}, `;
+    }
+  
+    // Remove the trailing comma and space from the query
+    alterQuery = alterQuery.slice(0, -2);
+  
+    // Add the WHERE clause and info_id parameter
+    updatedUserData.push(info_id);
+    alterQuery += ` WHERE info_id = $${updatedUserData.length} RETURNING * ;`;
+
+    try {
+      // use second query to update db
+      // render new profile page (route is below) with success! message and show new info
+      db.one(alterQuery, updatedUserData);
+    } catch (error) {
+      console.log("Internal server error when grabbing user info for PUT req: /updateinfo - " + error);
+    }
+    return res.redirect("/profile");
   });
 
 
@@ -501,3 +569,4 @@ try {
 } catch (error) {
   console.log('Server failed - ' + error);
 }
+
