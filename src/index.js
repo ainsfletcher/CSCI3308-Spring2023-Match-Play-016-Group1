@@ -385,7 +385,7 @@ app.get("/weatherAPI", async (req, res) => {
   ];
   
   Promise.all(cities.map(city => {
-    const apiKey = "fa93bd63602c38ff1ee8dffd86efe8b4";
+    const apiKey = "6080107851dd3d11d38549211812ecb7";
     const params = {access_key: apiKey, ...city};
     return axios.get('http://api.weatherstack.com/current', {params});
   })).then(responses => {
