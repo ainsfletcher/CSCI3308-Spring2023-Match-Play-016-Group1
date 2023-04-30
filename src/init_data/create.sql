@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS user_info(
   movement VARCHAR(10) NOT NULL,
   bio VARCHAR(500) NOT NULL,
   phone_number INT NOT NULL,
-  profile_image_url VARCHAR(255)
+  image_url VARCHAR(255)
 );
 
 DROP TABLE IF EXISTS user_to_info CASCADE;

@@ -500,3 +500,29 @@ try {
 } catch (error) {
   console.log('Server failed - ' + error);
 }
+
+
+const cloudinary = require('cloudinary').v2;
+
+// Configuration 
+cloudinary.config({
+  cloud_name: "dln2br2hn",
+  api_key: "136165393438221",
+  api_secret: "ruE_rnWzk7XfdTJk6_ValbbvB1o"
+});
+
+app.post('/upload', async (req, res) => {
+  try {
+    // Upload the image to Cloudinary
+    const result = await cloudinary.uploader.upload(req.file.path);
+
+    // Save the resulting URL to your database
+    const query = 'UPDATE user_info SET image_url = $1 WHERE info_id = $2';
+    const values = [result.secure_url, /* your user's info_id */];
+    await pool.query(query, values);
+
+    res.send('Image uploaded successfully');
+  } catch (err) {
+    res.status(500).send('Error uploading image');
+  }
+});
