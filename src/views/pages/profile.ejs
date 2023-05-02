@@ -41,12 +41,12 @@
           padding: 20px;
         }
       
-        input[type="text"] {
+        /* input[type="text"] {
           border: 1px solid #c1c1c1;
           border-radius: 5px;
           padding: 5px;
           width: 100%;
-        }
+        } */
       
         label {
           display: block;
@@ -140,31 +140,31 @@
                   <form action="/updateInfo" method="POST" autocomplete="off" id="edit-form">
                     <p>
                       <label for="name">Name:</label>
-                      <input type="text" id="name" name="name" />
+                      <input class="w-100 border border-light rounded"type="text" id="name" name="name" placeholder="Enter your name"/>
                     </p>
                     <p>
                       <label for="handicap">Handicap:</label>
-                      <input type="text" id="handicap" name="handicap" />
+                      <input class="w-100 border border-light rounded" type="number" id="handicap" name="handicap" max="54" placeholder="Handicap max is 54"/>
                     </p>
                     <p>
                       <label for="age">Age:</label>
-                      <input type="text" id="age" name="age" />
+                      <input class="w-100 border border-light rounded" type="number" id="age" name="age" min="8" max="100"placeholder="Enter your age"/>
                     </p>
                     <p>
                       <label for="home_course">Home Course:</label>
-                      <input type="text" id="home_course" name="home_course" />
+                      <input class="w-100 border border-light rounded" type="text" id="home_course" name="home_course" placeholder="Enter Home Course"/>
                     </p>
                     <p>
                       <label for="movement">Movement:</label>
-                      <input type="text" id="movement" name="movement" />
+                      <input class="w-100 border border-light rounded" type="text" id="movement" name="movement" placeholder="Prefer method of transportation"/>
                     </p>
                     <p>
                       <label for="bio">Bio:</label>
-                      <input type="text" id="bio" name="bio" />
+                      <input class="w-100 border border-light rounded" type="text" id="bio" name="bio" placeholder="Describe yourself fren!"/>
                     </p>
                     <p>
                       <label for="phone_number">Phone Number:</label>
-                      <input type="text" id="phone_number" name="phone_number" />
+                      <input class="w-100 border border-light rounded" type="tel" id="phone_number" name="phone_number" pattern="[0-9]{3}[0-9]{3}[0-9]{3}" placeholder="for example: 123-456-789">
                     </p>
                     <div class="button-container">
                       <button type="submit" class="btn btn-success">Update</button>
