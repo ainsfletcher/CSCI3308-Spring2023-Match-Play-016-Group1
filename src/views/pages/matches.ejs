@@ -20,7 +20,7 @@
                 if(locals.results && results != []){ 
                     results.forEach(function(res){ %>
                         <div class="col" style="padding-top: 20px">
-                            <div class="card">
+                            <div class="card style="max-width: 80rem;">
                                 <div class="card-body">
                                     <table class="table">
                                         <thead>
@@ -33,6 +33,7 @@
                                             <th scope="col">Movement</th>
                                             <th scope="col">Bio</th>
                                             <th scope="col">Phone Number</th>
+                                            <th scope="col">Match Status</th>
                                           </tr>
                                         </thead>
                                         <tbody>
@@ -43,7 +44,14 @@
                                             <td><%- res.home_course %></td>
                                             <td><%- res.movement %></td>
                                             <td><%- res.bio %></td>
-                                            <td><%- res.phone_number %></td>
+                                           
+                                            <% if (res.match_status != "Pending") { %>
+                                              <td><%- res.phone_number %></td>
+                                            <%} else { %>
+                                              <td> Match to see their phone number</td>
+                                            <% } %>
+                                              
+                                            <td><%- res.match_status %></td>
                                           </tr>
                                         </tbody>
                                       </table>

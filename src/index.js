@@ -614,4 +614,3 @@ try {
   console.log('Server failed - ' + error);
 }
 
-
