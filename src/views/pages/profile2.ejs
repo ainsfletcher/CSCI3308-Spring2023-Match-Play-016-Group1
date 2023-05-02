@@ -1,0 +1,151 @@
+<%- include ('../partials/head') %>
+    <%- include ('../partials/menu') %>
+        <div class="col"><%- include ('../partials/message') %></div>
+
+        <main>
+
+            <style>
+                body {
+                    background-image: url("https://i.redd.it/e3tdj6oimx231.jpg");
+                    background-repeat: no-repeat;
+                    background-attachment: fixed;
+                    background-size: 100% 100%;
+                }
+            </style>
+
+            <div class="container">
+
+                <div class="card-deck">
+                    <div class="row">
+                        <div class="col-lg-6 mb-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="container">
+                                        <h2> Welcome to matchPlay <%- results.name %>! </h2>
+                                    </div>
+                                    <h1>
+                                        <a>Name -> </a> <%- results.name %>
+                                    </h1>
+                                    <h1>
+                                        <a>Handicap -> </a><%- results.handicap %>
+                                    </h1>
+                                    <h1>
+                                        <a>Age -> </a> <%- results.age %>
+                                    </h1>
+                                    <h1>
+                                        <a>Home Course -> </a><%- results.home_course %>
+                                    </h1>
+                                    <h1>
+                                        <a>Movement -> </a> <%- results.movement %>
+                                    </h1>
+                                    <h1>
+                                        <a>Bio -> </a><%- results.bio %>
+                                    </h1>
+                                    <h1>
+                                        <a>Phone Number -> </a><%- results.phone_number %>
+                                    </h1>
+                                    <h1>
+                                        <a>User Image -> </a><img src="<%- results.image_url %>" style="width:100px;height:100px;">
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h2> Edit Your Profile</h2>
+                                    <form action="/updateInfo" method="POST" autocomplete="off">
+
+                                        <p>
+                                            <label for="name">Name:</label>
+                                            <input type="text" id="name" name="name" />
+                                        </p>
+                                        <p>
+                                            <label for="handicap">Handicap:</label>
+                                            <input type="text" id="handicap" name="handicap" />
+                                        </p>
+                                        <p>
+                                            <label for="age">Age:</label>
+                                            <input type="text" id="age" name="age" />
+                                        </p>
+                                        <p>
+                                            <label for="home_course">Home Course:</label>
+                                            <input type="text" id="home_course" name="home_course" />
+                                        </p>
+                                        <p>
+                                            <label for="movement">Movement:</label>
+                                            <input type="text" id="movement" name="movement" />
+                                        </p>
+                                        <p>
+                                            <label for="handicap">Bio:</label>
+                                            <input type="text" id="bio" name="bio" />
+                                        </p>
+                                        <p>
+                                            <label for="handicap">Phone Number:</label>
+                                            <input type="text" id="phone_number" name="phone_number" />
+                                        </p>
+                                        <button type="submit" class="btn btn-success">Update</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-lg-6 mb-4 mx-auto">
+                            <div class="card-container">
+                                <div class="card bg-light mb-3">
+                                    <div class="card-body">
+                                        <form action="/upload" method="POST" enctype="multipart/form-data"></form>
+                                        <p>
+                                            <label for="profile_image">Profile Image:</label>
+                                            <input type="file" id="profile_image" name="profile_image" />
+                                        </p>
+                                        <div class="button-container">
+                                            <button type="submit" class="btn btn-success"
+                                                onclick="fileHandler()">Update</button>
+                                            <button type="button" class="btn btn-secondary"
+                                                onclick="toggleEdit()">Cancel</button>
+                                        </div>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <%- include ('../partials/footer') %>
+
+            <script>
+                function toggleEdit() {
+                    var editForm = document.getElementById("card-edit");
+                    if (editForm.style.display === "none") {
+                        editForm.style.display = "block";
+                    } else {
+                        editForm.style.display = "none";
+                    }
+                }
+
+                async function fileHandler() {
+                    const filetest = document.getElementById("profile_image").files[0]
+                    const data = new FormData()
+                    data.append("name", filetest.name)
+                    data.append('file', document.getElementById("profile_image").files[0])
+                    console.log("######", filetest)
+                    const response = await fetch('http://localhost:3000/upload', {
+                        method: "POST",
+                        body: data
+                    })
+                    const result = await response.json()
+                    console.log("@@@@@@", result)
+                }
+            </script>
+
+
+
+
+

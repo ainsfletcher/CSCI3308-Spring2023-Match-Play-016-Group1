@@ -31,6 +31,7 @@ const db = require("./resources/js/dbConnection");
 
 app.set('view engine', 'ejs'); // set the view engine to EJS
 app.use(bodyParser.json()); // specify the usage of JSON for parsing request body.
+app.use(express.static('resources'))
 
 
 // initialize session variables
@@ -226,36 +227,29 @@ app.get("/", (req, res) => {
     const user = req.session.user;
     const info_id = await userToInfoDB(user);
 
-    const query = `SELECT * FROM user_info WHERE info_id = $1`;
+    const query = `SELECT * FROM user_info WHERE info_id = $1; `;
 
     const results = await db.one(query, [info_id]);
 
     // check if info exists (not undefined) else render page(route is below) w/ message "Please fill all boxes"
-    const data = req.body;
-    if(!data.name || !data.handicap || !data.age || !data.home_course || !data.movement || !data.bio || !data.phone_number) {
-      return res.render('pages/profile', {
-        message: "Please complete your profile by filling out all information!",
-        results: results
-      });
-    };
-
+    const data = req.body
 
     // query to alter at user_id if found (they cant even access this page if they arent logged in)
 
-    // const relationalQuery = `SELECT info_id `
+    // const relationalQuery = SELECT info_id 
     const alterQuery = `UPDATE user_info SET name = $1, handicap = $2, age = $3, home_course = $4, movement = $5, bio = $6, phone_number = $7 WHERE info_id = $8 RETURNING * ;`;
 
     try {
       // use second query to update db
       // render new profile page (route is below) with success! message and show new info
       db.one(alterQuery, [
-        data.name,
-        data.handicap,
-        data.age,
-        data.home_course,
-        data.movement,
-        data.bio,
-        data.phone_number,
+        data.name || results.name,
+        data.handicap || results.handicap,
+        data.age || results.age,
+        data.home_course || results.home_course,
+        data.movement || results.movement,
+        data.bio || results.bio,
+        data.phone_number || results.phone_number,
         info_id
       ]);
     } catch (error) {
@@ -270,7 +264,7 @@ app.get("/", (req, res) => {
       return res.render('pages/login', {
         message: "Please log in to view profile page!"
       });
-  }
+    }
 
     const user = req.session.user;
     // console.log("USER" + user);
@@ -291,10 +285,77 @@ app.get("/", (req, res) => {
       data = await db.one(query, [info_id]);
     }
     res.status(200).render("pages/profile", {
-      message: "Welcome! please enter your information",
       results: data
     });
 
+  });
+  //new update
+  app.post("/updateInfo", async (req, res) => {
+    // Check to make sure req.session.user exists - otherwise redirect to login and yell curse words
+    if(!req.session.user){
+      return res.render('pages/login',{
+        message: "login to update info"
+      });
+    }
+
+    const user = req.session.user;
+    const info_id = await userToInfoDB(user);
+
+    const query = `SELECT * FROM user_info WHERE info_id = $1`;
+
+    const results = await db.one(query, [info_id]);
+  
+    const data = req.body;
+  
+    // Prepare the updated user data
+    const updatedUserData = [];
+  
+    let alterQuery = 'UPDATE user_info SET ';
+  
+    if (data.name) {
+      updatedUserData.push(data.name);
+      alterQuery += `name = $${updatedUserData.length}, `;
+    }
+    if (data.handicap) {
+      updatedUserData.push(data.handicap);
+      alterQuery += `handicap = $${updatedUserData.length}, `;
+    }
+    if (data.age) {
+      updatedUserData.push(data.age);
+      alterQuery += `age = $${updatedUserData.length}, `;
+    }
+    if (data.home_course) {
+      updatedUserData.push(data.home_course);
+      alterQuery += `home_course = $${updatedUserData.length}, `;
+    }
+    if (data.movement) {
+      updatedUserData.push(data.movement);
+      alterQuery += `movement = $${updatedUserData.length}, `;
+    }
+    if (data.bio) {
+      updatedUserData.push(data.bio);
+      alterQuery += `bio = $${updatedUserData.length}, `;
+    }
+    if (data.phone_number) {
+      updatedUserData.push(data.phone_number);
+      alterQuery += `phone_number = $${updatedUserData.length}, `;
+    }
+  
+    // Remove the trailing comma and space from the query
+    alterQuery = alterQuery.slice(0, -2);
+  
+    // Add the WHERE clause and info_id parameter
+    updatedUserData.push(info_id);
+    alterQuery += ` WHERE info_id = $${updatedUserData.length} RETURNING * ;`;
+
+    try {
+      // use second query to update db
+      // render new profile page (route is below) with success! message and show new info
+      db.one(alterQuery, updatedUserData);
+    } catch (error) {
+      console.log("Internal server error when grabbing user info for PUT req: /updateinfo - " + error);
+    }
+    return res.redirect("/profile");
   });
 
 
@@ -310,25 +371,32 @@ app.get("/", (req, res) => {
   // });
   
 app.get("/weatherAPI", async (req, res) => {
-  const params = {
-    access_key: process.env.WEATHER_API_KEY,
-    query: 'Boulder',
-    units: 'f'
+
+  if(!req.session.user){
+    return res.render('pages/login');
   }
+
+  const cities = [
+    {query: 'Boulder', units: 'f'},
+    {query: 'Denver', units: 'f'},
+    {query: 'Fort Collins', units: 'f'},
+    {query: 'Colorado Springs', units: 'f'},
+    {query: 'Vail', units: 'f'}
+  ];
   
-  axios.get('http://api.weatherstack.com/current', {params})
-    .then(response => {
-      // console.log(response.data.current.temperature);
-      res.render('pages/weatherinfo', {
-        results: response.data.current
-      });
-      // const apiResponse = response.data;
-      // console.log(`Current temperature in ${response.data.current.temperature} is ${response}℃`);
-      // res.status(200).send(`Your data: ${response.data.location.name}`);
-    }).catch(error => {
-      console.log(error);
-      return error;
+  Promise.all(cities.map(city => {
+    const apiKey = "6080107851dd3d11d38549211812ecb7";
+    const params = {access_key: apiKey, ...city};
+    return axios.get('http://api.weatherstack.com/current', {params});
+  })).then(responses => {
+    const weatherData = responses.map(response => response.data.current);
+    //console.log(weatherData);
+    res.render('pages/weatherinfo', {
+      results: weatherData
     });
+  }).catch(error => {
+    console.log(error);
+  });
 
 });
 
@@ -465,6 +533,7 @@ app.get("/match_display", async (req,res) => {
       const info_id = await userToInfoDB({username: data[i].matched_username});
       const infoQuery = `SELECT * FROM user_info WHERE info_id = $1; `;
       const matched_user = await db.one(infoQuery, [info_id]);
+      matched_user["match_status"] = data[i].match_status;
       matches.unshift(matched_user);
     }
 
@@ -494,14 +563,6 @@ app.get("/match_display", async (req,res) => {
 
 app.use('/images', express.static('resources/img'));
 
-try {
-  module.exports = app.listen(3000);
-  console.log('Server is listening on port 3000');
-} catch (error) {
-  console.log('Server failed - ' + error);
-}
-
-
 const cloudinary = require('cloudinary').v2;
 
 // Configuration 
@@ -511,18 +572,46 @@ cloudinary.config({
   api_secret: "ruE_rnWzk7XfdTJk6_ValbbvB1o"
 });
 
-app.post('/upload', async (req, res) => {
+const multer = require("multer")
+const upload = multer()
+const streamifier = require('streamifier')
+
+app.post('/upload', upload.single('file'), async (req, res) => {
+  let result;
   try {
+    console.log("-----", req.file, typeof(req.file))
     // Upload the image to Cloudinary
-    const result = await cloudinary.uploader.upload(req.file.path);
+    const resultupload = await cloudinary.uploader.upload_stream(
+      {
+        folder: 'test'
+      }, 
+      async function(error, result)
+      {
+        console.log("!!!!!!!!!!!!!!!!!!" + result.secure_url + "-----------")
+        const info_id = await userToInfoDB(req.session.user);
+        // console.log("!!!!!! INFO ID:", info_id, "!!!!!!!!!!!!!!!!!!" ,resultupload, "!!!!!!!!!!!!!!!!!!!!!!!");
+        const query = 'UPDATE user_info SET image_url = $1 WHERE info_id = $2';
+        const values = [result.secure_url, info_id];
+        await db.query(query, values);
 
+    res.json({message:'Image uploaded successfully'});
+        // console.log(error, result)
+      });
+    streamifier.createReadStream(req.file.buffer).pipe(resultupload)
+    // console.log(resultupload)
     // Save the resulting URL to your database
-    const query = 'UPDATE user_info SET image_url = $1 WHERE info_id = $2';
-    const values = [result.secure_url, /* your user's info_id */];
-    await pool.query(query, values);
-
-    res.send('Image uploaded successfully');
   } catch (err) {
-    res.status(500).send('Error uploading image');
+    console.log(err)
+    res.status(500).json({message:'Error uploading image'});
   }
 });
+
+
+try {
+  module.exports = app.listen(3000);
+  console.log('Server is listening on port 3000');
+} catch (error) {
+  console.log('Server failed - ' + error);
+}
+
+
