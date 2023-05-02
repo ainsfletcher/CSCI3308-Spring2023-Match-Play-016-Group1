@@ -16,6 +16,13 @@
         <% } else { %>
           <table style="margin-left: auto;margin-right: auto;padding-top: 75px;"> 
             <tr>
+              <% if (results[1].weather_descriptions == "Sunny" || results[1].weather_descriptions == "Partly cloudy") { %>
+                <td style="background-color: khaki;">It is <%=results[1].weather_descriptions%> in Denver, it is a good day to go golfing!</td>
+              <%} else { %>
+                <td style="background-color: khaki;"> It is <%=results[1].weather_descriptions%> in Denver, it is NOT a good day to go golfing</td>
+              <% } %>
+              </tr>
+              <tr>
               <td style="padding: 75px; background-color: cornflowerblue;"><h1>Weather in Boulder, CO : </h1></td>
               <td><div class="card" style="width: 10rem;"><centre>
                 <img class="card-img-top" src="<%- results[0].weather_icons[0] %>" alt="weather icon">
