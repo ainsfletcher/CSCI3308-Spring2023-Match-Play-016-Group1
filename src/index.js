@@ -563,6 +563,50 @@ app.get("/match_display", async (req,res) => {
 
 app.use('/images', express.static('resources/img'));
 
+const cloudinary = require('cloudinary').v2;
+
+// Configuration 
+cloudinary.config({
+  cloud_name: "dln2br2hn",
+  api_key: "136165393438221",
+  api_secret: "ruE_rnWzk7XfdTJk6_ValbbvB1o"
+});
+
+const multer = require("multer")
+const upload = multer()
+const streamifier = require('streamifier')
+
+app.post('/upload', upload.single('file'), async (req, res) => {
+  let result;
+  try {
+    console.log("-----", req.file, typeof(req.file))
+    // Upload the image to Cloudinary
+    const resultupload = await cloudinary.uploader.upload_stream(
+      {
+        folder: 'test'
+      }, 
+      async function(error, result)
+      {
+        console.log("!!!!!!!!!!!!!!!!!!" + result.secure_url + "-----------")
+        const info_id = await userToInfoDB(req.session.user);
+        // console.log("!!!!!! INFO ID:", info_id, "!!!!!!!!!!!!!!!!!!" ,resultupload, "!!!!!!!!!!!!!!!!!!!!!!!");
+        const query = 'UPDATE user_info SET image_url = $1 WHERE info_id = $2';
+        const values = [result.secure_url, info_id];
+        await db.query(query, values);
+
+    res.json({message:'Image uploaded successfully'});
+        // console.log(error, result)
+      });
+    streamifier.createReadStream(req.file.buffer).pipe(resultupload)
+    // console.log(resultupload)
+    // Save the resulting URL to your database
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({message:'Error uploading image'});
+  }
+});
+
+
 try {
   module.exports = app.listen(3000);
   console.log('Server is listening on port 3000');
