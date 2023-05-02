@@ -16,7 +16,7 @@
   
     <div class="container text-center">
         <centre>
-          <div class="card text-white bg-success mb-3" style="max-width: 80rem;">
+          <div class="card style="max-width: 80rem;">
               <h1 id="type"></h1>
             </div>
             <div class="col" style="padding-top: 20px">
@@ -26,7 +26,7 @@
                     
                 results.forEach(function(res){ %>
                 <div class="col" style="padding-top: 20px">
-                    <div class="card text-white bg-success mb-3" style="max-width: 80rem;">
+                    <div class="card mb-3" style="max-width: 80rem;">
                         <div class="card-body">
                           <div class="card-body">
                             <table class="table">
@@ -39,6 +39,7 @@
                                     <th scope="col">Home Course</th>
                                     <th scope="col">Movement</th>
                                     <th scope="col">Bio</th>
+                                    <th scope="col">Phone Number</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -49,6 +50,7 @@
                                     <td><%- res.home_course %></td>
                                     <td><%- res.movement %></td>
                                     <td><%- res.bio %></td>
+                                    <td><%- res.phone_number %></td>
                                   </tr>
                                 </tbody>
                               </table>
@@ -86,17 +88,17 @@
     </div>
 </main>
 <script>
-    var i = 0;
-    var txt = 'Find Your Next MatchPlay!'; /* The text */
-    var speed = 75; /* The speed/duration of the effect in milliseconds */
+  var i = 0;
+var txt = 'Find Your Next MatchPlay!'; /* The text */
+var speed = 50; /* The speed/duration of the effect in milliseconds */
 
-    function typeWriter() {
-      if (i < txt.length) {
-        document.getElementById("type").innerHTML += txt.charAt(i);
-        i++;
-        setTimeout(typeWriter, speed);
-      }
-    }
-    window.onload= typeWriter();
+function typeWriter() {
+if (i < txt.length) {
+document.getElementById("type").innerHTML += txt.charAt(i);
+i++;
+setTimeout(typeWriter, speed);
+}
+}
+window.onload = typeWriter();
 </script>
 <%- include ('../partials/footer') %>
