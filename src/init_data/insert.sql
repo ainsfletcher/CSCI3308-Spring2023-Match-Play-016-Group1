@@ -27,7 +27,7 @@ INSERT INTO user_to_info (user_id, info_id) VALUES (5, 5);
 INSERT INTO user_to_info (user_id, info_id) VALUES (6, 6);
 
 -- this is just a hardcoded match (test case)
-INSERT INTO matches (matched_username, active_username, is_match, match_status) VALUES ('test', 'Adam', TRUE, 'Pending');
+INSERT INTO matches (matched_username, active_username, is_match, match_status) VALUES ('test', 'Ainsley', TRUE, 'Pending');
 INSERT INTO matches (matched_username, active_username, is_match, match_status) VALUES ('test', 'Ainsley', TRUE, 'Pending');
 INSERT INTO matches (matched_username, active_username, is_match, match_status) VALUES ('test', 'Shaun', TRUE, 'Pending');
 INSERT INTO matches (matched_username, active_username, is_match, match_status) VALUES ('test', 'Moses', TRUE, 'Pending');
