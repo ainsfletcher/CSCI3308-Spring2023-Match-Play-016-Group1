@@ -127,7 +127,8 @@
                                                                 <td><%- results.bio %></td>
                                                                 <td><%- results.phone_number %></td>
                                                                 <td><img src="<%- results.image_url %>"
-                                                                        style="width:100px;height:100px;" alt="Upload your image below"></td>
+                                                                        style="width:100px;height:100px;"
+                                                                        alt="Upload your image below"></td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -148,13 +149,15 @@
                                                         <label for="handicap">Handicap:</label>
                                                         <input class="w-100 border border-light rounded" type="number"
                                                             id="handicap" name="handicap" max="54"
+                                                            title="Max number of handicap is 54"
                                                             placeholder="Handicap max is 54" />
                                                     </p>
                                                     <p>
                                                         <label for="age">Age:</label>
                                                         <input class="w-100 border border-light rounded" type="number"
-                                                            id="age" name="age" min="8" max="100"
-                                                            placeholder="Enter your age" />
+                                                            title="User age must be between 8 and 100" id="age"
+                                                            name="age" min="8" max="100" id="age" name="age" min="8"
+                                                            max="100" placeholder="Enter your age" />
                                                     </p>
                                                     <p>
                                                         <label for="home_course">Home Course:</label>
@@ -175,10 +178,10 @@
                                                     </p>
                                                     <p>
                                                         <label for="phone_number">Phone Number:</label>
-                                                        <input class="w-100 border border-light rounded" type="tel"
+                                                        <input class="w-100 border border-light rounded" type="text"
                                                             id="phone_number" name="phone_number"
-                                                            pattern="[0-9]{3}[0-9]{3}[0-9]{3}"
-                                                            placeholder="for example: 123-456-789">
+                                                            placeholder="for example: 123456789">
+
                                                     </p>
                                                     <div class="button-container">
                                                         <button type="submit" class="btn btn-success">Update</button>
